@@ -1,0 +1,151 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useSound } from "./SoundProvider";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Bubble Sort", href: "/bubble-sort" },
+  { label: "Merge Sort", href: "/merge-sort" },
+  { label: "Quick Sort", href: "/quick-sort" },
+  { label: "Compare", href: "/compare" }
+];
+
+function SpeakerIcon({ muted }: { muted: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M11 5L6 9H3v6h3l5 4V5z" />
+      {muted ? (
+        <path d="M16 9l5 6m0-6l-5 6" />
+      ) : (
+        <>
+          <path d="M16 9a5 5 0 010 6" />
+          <path d="M19 6a8 8 0 010 12" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {open ? (
+        <>
+          <path d="M6 6l12 12" />
+          <path d="M18 6l-12 12" />
+        </>
+      ) : (
+        <>
+          <path d="M3 6h18" />
+          <path d="M3 12h18" />
+          <path d="M3 18h18" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+export default function NavBar() {
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { enabled, toggle } = useSound();
+
+  const isActive = (href: string) => pathname === href;
+
+  return (
+    <nav
+      className="fixed top-0 left-0 z-50 w-full border-b border-[rgba(0,0,0,0.08)] bg-[rgba(255,255,255,0.85)]"
+      style={{ backdropFilter: "blur(20px)" }}
+    >
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <Link href="/" className="text-lg font-semibold tracking-tight">
+          SortViz
+        </Link>
+
+        <div className="hidden items-center gap-2 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                isActive(item.href)
+                  ? "bg-[#1D1D1F] text-white"
+                  : "text-[var(--color-text-primary)] hover:bg-white/70"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/70 px-3 py-2 text-sm"
+            onClick={toggle}
+            aria-label={enabled ? "Disable sound" : "Enable sound"}
+          >
+            <SpeakerIcon muted={!enabled} />
+            <span className="hidden text-xs sm:inline">
+              {enabled ? "Sound On" : "Sound Off"}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className="flex items-center rounded-full border border-[var(--color-border)] bg-white/70 p-2 md:hidden"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+          >
+            <MenuIcon open={menuOpen} />
+          </button>
+        </div>
+      </div>
+
+      {menuOpen ? (
+        <div className="border-t border-[rgba(0,0,0,0.08)] bg-[rgba(255,255,255,0.95)] px-6 py-4 md:hidden">
+          <div className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  isActive(item.href)
+                    ? "bg-[#1D1D1F] text-white"
+                    : "text-[var(--color-text-primary)] hover:bg-white/70"
+                }`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </nav>
+  );
+}

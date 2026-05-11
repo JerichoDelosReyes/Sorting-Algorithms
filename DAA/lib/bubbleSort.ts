@@ -37,7 +37,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
       comparisons += 1;
       pushFrame(
         { [j]: "comparing", [j + 1]: "comparing" },
-        `Comparing indices ${j} and ${j + 1}`,
+        `Comparing indices ${j} and ${j + 1}` ,
         37
       );
 
@@ -46,7 +46,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
         [array[j], array[j + 1]] = [array[j + 1], array[j]];
         pushFrame(
           { [j]: "swapping", [j + 1]: "swapping" },
-          `Swapped indices ${j} and ${j + 1}`,
+          `Swapped indices ${j} and ${j + 1}` ,
           45
         );
       }
@@ -55,7 +55,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     const sortedIndex = array.length - i - 1;
     pushFrame(
       { [sortedIndex]: "sorted" },
-      `Index ${sortedIndex} is in final position`,
+      `Index ${sortedIndex} is in final position` ,
       55
     );
   }

@@ -1,0 +1,220 @@
+"use client";
+
+import Link from "next/link";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { recordBubbleSort } from "../lib/bubbleSort";
+import { recordMergeSort } from "../lib/mergeSort";
+import { recordQuickSort } from "../lib/quickSort";
+import { ALGO_INFO } from "../lib/algoInfo";
+import { generateRandomArray } from "../lib/arrayUtils";
+import { soundEngine } from "../lib/sounds";
+import { Algorithm, FrameWithLine } from "../lib/types";
+import { useSound } from "./SoundProvider";
+import AlgoDescription from "./AlgoDescription";
+import CodePanel from "./CodePanel";
+import ComplexityCard from "./ComplexityCard";
+import Controls from "./Controls";
+import Visualizer from "./Visualizer";
+
+const SPEED_VALUES = [500, 200, 80, 30, 5];
+
+const RECORDERS: Record<Algorithm, (input: number[]) => FrameWithLine[]> = {
+  bubble: recordBubbleSort,
+  merge: recordMergeSort,
+  quick: recordQuickSort
+};
+
+interface AlgorithmPageProps {
+  algorithmId: Algorithm;
+}
+
+export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
+  const info = ALGO_INFO[algorithmId];
+  const { enabled } = useSound();
+
+  const [arraySize, setArraySize] = useState(40);
+  const [array, setArray] = useState<number[]>(() => generateRandomArray(40));
+  const [frames, setFrames] = useState<FrameWithLine[]>([]);
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(3);
+  const previousCounts = useRef({ comparisons: 0, swaps: 0 });
+
+  useEffect(() => {
+    const nextFrames = RECORDERS[algorithmId](array);
+    setFrames(nextFrames);
+    setCurrentFrame(0);
+    setIsPlaying(false);
+    previousCounts.current = { comparisons: 0, swaps: 0 };
+  }, [algorithmId, array]);
+
+  useEffect(() => {
+    if (!enabled || frames.length === 0) {
+      return;
+    }
+    const frame = frames[Math.min(currentFrame, frames.length - 1)];
+    const previous = previousCounts.current;
+
+    if (frame.comparisons > previous.comparisons) {
+      const highlightIndex = Number(Object.keys(frame.highlights)[0] ?? 0);
+      const maxValue = Math.max(...frame.array, 1);
+      soundEngine.playComparison(frame.array[highlightIndex] ?? maxValue, maxValue);
+    } else if (frame.swaps > previous.swaps) {
+      soundEngine.playSwap();
+    }
+
+    previousCounts.current = {
+      comparisons: frame.comparisons,
+      swaps: frame.swaps
+    };
+  }, [currentFrame, enabled, frames]);
+
+  useEffect(() => {
+    if (!isPlaying || frames.length === 0) {
+      return;
+    }
+
+    if (currentFrame >= frames.length - 1) {
+      setIsPlaying(false);
+      if (enabled) {
+        soundEngine.playComplete();
+      }
+      return;
+    }
+
+    const delay = SPEED_VALUES[Math.max(0, speed - 1)] ?? SPEED_VALUES[0];
+    const timeout = window.setTimeout(() => {
+      setCurrentFrame((prev) => Math.min(prev + 1, frames.length - 1));
+    }, delay);
+
+    return () => window.clearTimeout(timeout);
+  }, [currentFrame, enabled, frames.length, isPlaying, speed]);
+
+  const handleShuffle = useCallback(() => {
+    setArray(generateRandomArray(arraySize));
+  }, [arraySize]);
+
+  const handleReset = useCallback(() => {
+    setIsPlaying(false);
+    setCurrentFrame(0);
+  }, []);
+
+  const handlePlayToggle = useCallback(() => {
+    if (!isPlaying) {
+      soundEngine.init();
+    }
+    setIsPlaying((prev) => !prev);
+  }, [isPlaying]);
+
+  const handleStepBack = useCallback(() => {
+    if (isPlaying) {
+      return;
+    }
+    setCurrentFrame((prev) => Math.max(prev - 1, 0));
+  }, [isPlaying]);
+
+  const handleStepForward = useCallback(() => {
+    if (isPlaying) {
+      return;
+    }
+    setCurrentFrame((prev) => Math.min(prev + 1, frames.length - 1));
+  }, [frames.length, isPlaying]);
+
+  const handleSizeChange = useCallback((value: number) => {
+    setArraySize(value);
+    setArray(generateRandomArray(value));
+  }, []);
+
+  const headerBadges = useMemo(() => {
+    return [
+      { label: "Worst", value: info.complexity.worst },
+      { label: "Space", value: info.complexity.space },
+      { label: info.stable ? "Stable" : "Not Stable", value: info.stable }
+    ];
+  }, [info]);
+
+  const activeFrame = frames[Math.min(currentFrame, frames.length - 1)];
+
+  return (
+    <div className="mx-auto w-full max-w-6xl px-6 pb-16">
+      <header className="border-b border-[var(--color-border)] pb-6">
+        <h1 className="text-3xl font-semibold">{info.name}</h1>
+        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+          {info.shortDescription} | Worst {info.complexity.worst} | Space
+          {" "}
+          {info.complexity.space}
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {headerBadges.map((badge) => (
+            <span
+              key={badge.label}
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                badge.label === "Worst"
+                  ? "bg-[#FFE5E5] text-[#C91C1C]"
+                  : badge.label === "Space"
+                    ? "bg-[#E5F0FF] text-[#0A84FF]"
+                    : badge.value
+                      ? "bg-[#E6F6EA] text-[#1F7A3D]"
+                      : "bg-[#FFE5E5] text-[#C91C1C]"
+              }`}
+            >
+              {badge.label === "Stable" || badge.label === "Not Stable"
+                ? badge.label
+                : `${badge.label}: ${badge.value}`}
+            </span>
+          ))}
+        </div>
+      </header>
+
+      <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
+        <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
+          <Visualizer
+            frames={frames}
+            currentFrameIndex={currentFrame}
+            totalFrames={frames.length}
+          />
+          <Controls
+            isPlaying={isPlaying}
+            onPlayToggle={handlePlayToggle}
+            onShuffle={handleShuffle}
+            onStepBack={handleStepBack}
+            onStepForward={handleStepForward}
+            onReset={handleReset}
+            canStepBack={currentFrame > 0}
+            canStepForward={currentFrame < frames.length - 1}
+            arraySize={arraySize}
+            onArraySizeChange={handleSizeChange}
+            speed={speed}
+            onSpeedChange={setSpeed}
+            frameIndex={currentFrame}
+            totalFrames={frames.length}
+          />
+        </div>
+
+        <div className="h-full">
+          <CodePanel code={info.code} currentLine={activeFrame?.line} />
+        </div>
+      </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <ComplexityCard algorithmId={algorithmId} />
+        <AlgoDescription algorithmId={algorithmId} />
+      </div>
+
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+        <Link
+          href="/"
+          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+        >
+          Back to Home
+        </Link>
+        <Link
+          href="/compare"
+          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white"
+        >
+          Compare All Algorithms
+        </Link>
+      </div>
+    </div>
+  );
+}

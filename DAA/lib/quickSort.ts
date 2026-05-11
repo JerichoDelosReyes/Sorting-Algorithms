@@ -35,7 +35,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
 
     pushFrame(
       { [high]: "pivot" },
-      `Pivot at index ${high}`,
+      `Pivot at index ${high}` ,
       36
     );
 
@@ -43,7 +43,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
       comparisons += 1;
       pushFrame(
         { [j]: "comparing", [high]: "pivot" },
-        `Comparing index ${j} to pivot`,
+        `Comparing index ${j} to pivot` ,
         43
       );
       if (array[j] < pivot) {
@@ -51,7 +51,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
         [array[i], array[j]] = [array[j], array[i]];
         pushFrame(
           { [i]: "swapping", [j]: "swapping" },
-          `Swapped indices ${i} and ${j}`,
+          `Swapped indices ${i} and ${j}` ,
           50
         );
         i += 1;
@@ -62,12 +62,12 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     [array[i], array[high]] = [array[high], array[i]];
     pushFrame(
       { [i]: "swapping", [high]: "swapping" },
-      `Moved pivot to index ${i}`,
+      `Moved pivot to index ${i}` ,
       61
     );
     pushFrame(
       { [i]: "sorted" },
-      `Pivot fixed at index ${i}`,
+      `Pivot fixed at index ${i}` ,
       62
     );
 
