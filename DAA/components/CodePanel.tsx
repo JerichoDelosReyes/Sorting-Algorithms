@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-type TokenType = "keyword" | "comment" | "string" | "number" | "plain";
+type TokenType = "keyword" | "comment" | "string" | "number" | "plain" | "function";
 
 interface Token {
   text: string;
@@ -11,7 +11,7 @@ interface Token {
 
 interface CodePanelProps {
   code: string;
-  currentLine?: number;
+  activeLine?: number;
 }
 
 const KEYWORDS = new Set([
@@ -27,7 +27,10 @@ const KEYWORDS = new Set([
   "interface",
   "type",
   "import",
-  "from"
+  "from",
+  "new",
+  "this",
+  "class"
 ]);
 
 const COLOR_MAP: Record<TokenType, string> = {
@@ -35,7 +38,8 @@ const COLOR_MAP: Record<TokenType, string> = {
   comment: "#8E8E93",
   string: "#FF9F0A",
   number: "#BF5AF2",
-  plain: "#E5E5EA"
+  plain: "#E5E5EA",
+  function: "#5AC8FA"
 };
 
 function findCommentIndex(line: string): number {
@@ -48,7 +52,7 @@ function findCommentIndex(line: string): number {
       }
       continue;
     }
-    if (char === "\"" || char === "'" || char === "`") {
+    if (char === '"' || char === "'" || char === "`") {
       inString = char;
       continue;
     }
@@ -90,9 +94,10 @@ function tokenizeLine(line: string): Token[] {
   return tokens;
 }
 
-export default function CodePanel({ code, currentLine }: CodePanelProps) {
+export default function CodePanel({ code, activeLine }: CodePanelProps) {
   const [copied, setCopied] = useState(false);
-  const lines = useMemo(() => code.split("\n"), [code]);
+  const linesArray = useMemo(() => code.split("\n"), [code]);
+  const activeLineRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!copied) {
@@ -101,6 +106,24 @@ export default function CodePanel({ code, currentLine }: CodePanelProps) {
     const timeout = window.setTimeout(() => setCopied(false), 2000);
     return () => window.clearTimeout(timeout);
   }, [copied]);
+
+  useEffect(() => {
+    if (activeLine && activeLineRef.current) {
+      const container = activeLineRef.current.parentElement?.parentElement;
+      if (container) {
+        const offsetTop = activeLineRef.current.offsetTop;
+        const containerHeight = container.clientHeight;
+        const lineHeight = activeLineRef.current.clientHeight;
+
+        if (offsetTop < container.scrollTop || offsetTop > container.scrollTop + containerHeight - lineHeight) {
+          container.scrollTo({
+            top: offsetTop - containerHeight / 2 + lineHeight / 2,
+            behavior: "smooth"
+          });
+        }
+      }
+    }
+  }, [activeLine]);
 
   const handleCopy = async () => {
     if (!navigator.clipboard) {
@@ -111,13 +134,13 @@ export default function CodePanel({ code, currentLine }: CodePanelProps) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+    <div className="flex h-48 min-h-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card sm:h-64 lg:h-full">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 flex-shrink-0">
         <div className="text-sm font-medium text-white/80">TypeScript</div>
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/20"
+          className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/20 transition-colors"
         >
           {copied ? (
             <span className="inline-flex items-center gap-1">
@@ -141,27 +164,28 @@ export default function CodePanel({ code, currentLine }: CodePanelProps) {
           )}
         </button>
       </div>
-      <div className="flex-1 overflow-auto">
-        <pre className="text-sm leading-6 text-white/90">
-          {lines.map((line, index) => {
+      <div className="min-h-0 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]">
+        <pre className="text-xs leading-6 text-white/90 font-mono">
+          {linesArray.map((line, index) => {
             const lineNumber = index + 1;
             const tokens = tokenizeLine(line);
-            const isActive = currentLine === lineNumber;
+            const isActive = activeLine === lineNumber;
 
             return (
               <div
-                key={`${line}-${lineNumber}`}
-                className={`flex gap-4 px-4 py-0.5 ${
+                key={`${lineNumber}`}
+                ref={isActive ? activeLineRef : null}
+                className={`flex gap-3 px-4 py-1 ${
                   isActive
-                    ? "border-l-4 border-[#0A84FF] bg-[rgba(10,132,255,0.1)]"
-                    : "border-l-4 border-transparent"
+                    ? "border-l-3 border-[#0A84FF] bg-[rgba(10,132,255,0.15)]"
+                    : "border-l-3 border-transparent"
                 }`}
               >
-                <span className="w-8 text-xs text-white/40">{lineNumber}</span>
-                <code className="whitespace-pre">
+                <span className="w-8 text-right text-white/40 flex-shrink-0">{lineNumber}</span>
+                <code className="whitespace-pre flex-1">
                   {tokens.map((token, tokenIndex) => (
                     <span
-                      key={`${tokenIndex}-${token.text}`}
+                      key={`${lineNumber}-${tokenIndex}`}
                       style={{ color: COLOR_MAP[token.type] }}
                     >
                       {token.text}

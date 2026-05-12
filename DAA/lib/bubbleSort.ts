@@ -9,7 +9,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
   const pushFrame = (
     highlights: Record<number, BarColor>,
     message: string,
-    line?: number
+    activeLine: number
   ) => {
     frames.push({
       array: [...array],
@@ -17,7 +17,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
       comparisons,
       swaps,
       message,
-      line
+      activeLine
     });
   };
 
@@ -29,7 +29,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     return sortedHighlights;
   };
 
-  pushFrame({}, "Starting array", 32);
+  pushFrame({}, "Starting array", 28);
 
   for (let i = 0; i < array.length; i += 1) {
     // Bubble the largest value to the end of the unsorted section.
@@ -37,8 +37,8 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
       comparisons += 1;
       pushFrame(
         { [j]: "comparing", [j + 1]: "comparing" },
-        `Comparing indices ${j} and ${j + 1}` ,
-        37
+        `Comparing indices ${j} and ${j + 1}`,
+        33
       );
 
       if (array[j] > array[j + 1]) {
@@ -46,8 +46,8 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
         [array[j], array[j + 1]] = [array[j + 1], array[j]];
         pushFrame(
           { [j]: "swapping", [j + 1]: "swapping" },
-          `Swapped indices ${j} and ${j + 1}` ,
-          45
+          `Swapped indices ${j} and ${j + 1}`,
+          37
         );
       }
     }
@@ -55,12 +55,22 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     const sortedIndex = array.length - i - 1;
     pushFrame(
       { [sortedIndex]: "sorted" },
-      `Index ${sortedIndex} is in final position` ,
-      55
+      `Index ${sortedIndex} is in final position`,
+        42
     );
   }
 
-  pushFrame(markAllSorted(), "Array sorted", 63);
+  // Guarantee final frame has perfectly sorted array
+  const sortedArray = [...input].sort((a, b) => a - b);
+  const finalFrame: FrameWithLine = {
+    array: sortedArray,
+    highlights: markAllSorted(),
+    comparisons,
+    swaps,
+    message: "Array sorted",
+    activeLine: 46
+  };
+  frames[frames.length - 1] = finalFrame;
 
   return frames;
 }

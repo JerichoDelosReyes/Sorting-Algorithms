@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CompareVisualizer from "../../components/CompareVisualizer";
+import ComplexityGraph from "../../components/ComplexityGraph";
 import { useSound } from "../../components/SoundProvider";
 import { recordBubbleSort } from "../../lib/bubbleSort";
 import { recordMergeSort } from "../../lib/mergeSort";
@@ -140,19 +141,19 @@ export default function ComparePage() {
     ids.map((id) => ALGO_INFO[id].name).join(" & ");
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-6 pb-20">
-      <header className="border-b border-[var(--color-border)] pb-6">
-        <h1 className="text-3xl font-semibold">Algorithm Comparison</h1>
-        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+    <div className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6">
+      <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
+        <h1 className="text-2xl font-semibold sm:text-3xl">Algorithm Comparison</h1>
+        <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
           All three algorithms run simultaneously on the same array.
         </p>
       </header>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-4 flex flex-col gap-3 sm:mt-6 sm:flex-wrap sm:flex-row sm:items-center">
         <button
           type="button"
           onClick={handleShuffle}
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
           disabled={isPlaying}
         >
           Shuffle
@@ -160,40 +161,42 @@ export default function ComparePage() {
         <button
           type="button"
           onClick={handlePlayToggle}
-          className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-sm font-semibold text-white"
+          className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow"
         >
           {isPlaying ? "Pause" : "Play"}
         </button>
-        <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm">
-          <span className="text-[var(--color-text-secondary)]">Speed</span>
+        <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:w-auto sm:text-sm">
+          <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
           <input
             type="range"
             min={1}
             max={5}
             value={speed}
             onChange={(event) => setSpeed(Number(event.target.value))}
+            className="flex-1 sm:w-20"
           />
-          <span className="text-[var(--color-text-primary)]">
+          <span className="w-10 text-right text-[var(--color-text-primary)]">
             {SPEED_VALUES[Math.max(0, speed - 1)]}ms
           </span>
         </div>
 
-        <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm">
-          <span className="text-[var(--color-text-secondary)]">Size</span>
+        <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:w-auto sm:text-sm">
+          <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
           <input
             type="range"
             min={10}
-            max={80}
+            max={100}
             value={arraySize}
             onChange={(event) => handleSizeChange(Number(event.target.value))}
+            className="flex-1 sm:w-20"
           />
-          <span className="text-[var(--color-text-primary)]">{arraySize}</span>
+          <span className="w-8 text-right text-[var(--color-text-primary)]">{arraySize}</span>
         </div>
 
         <button
           type="button"
           onClick={handleReset}
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm hover:bg-[var(--color-surface)] transition-colors"
         >
           Reset
         </button>
@@ -203,43 +206,82 @@ export default function ComparePage() {
         <CompareVisualizer items={items} />
       </div>
 
+      <div className="mt-8">
+        <ComplexityGraph />
+      </div>
+
       <AnimatePresence>
         {allDone ? (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-10 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card"
-          >
-            <h3 className="text-lg font-semibold">Results</h3>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <div className="rounded-[16px] bg-white/80 px-4 py-3">
-                <div className="text-xs text-[var(--color-text-secondary)]">
-                  Fewest Comparisons
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm shadow-xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, type: "spring" }}
+              className="relative w-full max-w-2xl overflow-hidden rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-6 sm:p-8"
+            >
+              <button
+                type="button"
+                onClick={handleReset}
+                className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-border)] hover:text-[var(--color-text-primary)] transition-colors"
+                aria-label="Close"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
+              
+              <div className="flex flex-col items-center mb-6 text-center">
+                <div className="mb-4 rounded-full bg-[#E5F0FF] p-3 text-[#0A84FF]">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
                 </div>
-                <span className="mt-2 inline-flex rounded-full bg-[#E6F6EA] px-3 py-1 text-xs font-semibold text-[#1F7A3D]">
-                  {formatWinners(winners.comparisons)}
-                </span>
+                <h3 className="text-2xl font-bold">Comparison Complete!</h3>
+                <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+                  Here are the final insights for the array size of {arraySize}.
+                </p>
               </div>
-              <div className="rounded-[16px] bg-white/80 px-4 py-3">
-                <div className="text-xs text-[var(--color-text-secondary)]">
-                  Fewest Swaps
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
+                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                    Fewest Comparisons
+                  </div>
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                    {formatWinners(winners.comparisons)}
+                  </span>
                 </div>
-                <span className="mt-2 inline-flex rounded-full bg-[#E6F6EA] px-3 py-1 text-xs font-semibold text-[#1F7A3D]">
-                  {formatWinners(winners.swaps)}
-                </span>
-              </div>
-              <div className="rounded-[16px] bg-white/80 px-4 py-3">
-                <div className="text-xs text-[var(--color-text-secondary)]">
-                  Finished First
+                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
+                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                    Fewest Swaps
+                  </div>
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                    {formatWinners(winners.swaps)}
+                  </span>
                 </div>
-                <span className="mt-2 inline-flex rounded-full bg-[#E6F6EA] px-3 py-1 text-xs font-semibold text-[#1F7A3D]">
-                  {formatWinners(winners.speed)}
-                </span>
+                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
+                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                    Finished First
+                  </div>
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                    {formatWinners(winners.speed)}
+                  </span>
+                </div>
               </div>
-            </div>
-          </motion.div>
+              
+              <div className="mt-8 flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleShuffle}
+                  className="rounded-full bg-[var(--color-accent)] px-8 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
+                >
+                  Shuffle & Try Again
+                </button>
+              </div>
+            </motion.div>
+          </div>
         ) : null}
       </AnimatePresence>
     </div>

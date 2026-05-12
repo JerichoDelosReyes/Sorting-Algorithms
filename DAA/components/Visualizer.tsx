@@ -133,10 +133,10 @@ export default function Visualizer({
 
   return (
     <div className={className ?? "w-full"}>
-      <div ref={containerRef} className="h-72 w-full">
+      <div ref={containerRef} className="h-48 w-full sm:h-64 lg:h-72">
         <canvas ref={canvasRef} className="h-full w-full" />
       </div>
-      <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
+      <p className="mt-3 text-xs text-[var(--color-text-secondary)] sm:text-sm">
         {message}
       </p>
       <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#E5E5EA]">

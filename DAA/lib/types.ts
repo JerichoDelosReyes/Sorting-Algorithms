@@ -14,6 +14,7 @@ export interface Frame {
   comparisons: number;
   swaps: number;
   message: string;
+  activeLine: number;
 }
 
 export interface ComplexityInfo {

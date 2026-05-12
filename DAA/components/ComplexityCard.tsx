@@ -66,10 +66,14 @@ export default function ComplexityCard({ algorithmId }: ComplexityCardProps) {
           <span className="text-[var(--color-text-secondary)]">Stability</span>
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
-              stable ? "bg-[#E6F6EA] text-[#1F7A3D]" : "bg-[#FFE5E5] text-[#C91C1C]"
+              algorithmId === "quick"
+                ? "bg-[#E5F0FF] text-[#0A84FF]"
+                : stable
+                  ? "bg-[#E6F6EA] text-[#1F7A3D]"
+                  : "bg-[#FFE5E5] text-[#C91C1C]"
             }`}
           >
-            {stable ? "Stable Algorithm" : "Not Stable"}
+            {algorithmId === "quick" ? "In-place" : (stable ? "Stable Algorithm" : "Not Stable")}
           </span>
         </div>
       </div>

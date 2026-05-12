@@ -53,3 +53,28 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+/* Custom scrollbar for code panel and scrollable areas */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2c2c2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3a3c;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5c;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3c #2c2c2e;
+}

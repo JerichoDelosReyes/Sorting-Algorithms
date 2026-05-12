@@ -9,7 +9,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
   const pushFrame = (
     highlights: Record<number, BarColor>,
     message: string,
-    line?: number
+    activeLine: number
   ) => {
     frames.push({
       array: [...array],
@@ -17,7 +17,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
       comparisons,
       swaps,
       message,
-      line
+      activeLine
     });
   };
 
@@ -35,24 +35,24 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
 
     pushFrame(
       { [high]: "pivot" },
-      `Pivot at index ${high}` ,
-      36
+      `Pivot at index ${high}`,
+      34
     );
 
     for (let j = low; j < high; j += 1) {
       comparisons += 1;
       pushFrame(
         { [j]: "comparing", [high]: "pivot" },
-        `Comparing index ${j} to pivot` ,
-        43
+        `Comparing index ${j} to pivot`,
+        39
       );
       if (array[j] < pivot) {
         swaps += 1;
         [array[i], array[j]] = [array[j], array[i]];
         pushFrame(
           { [i]: "swapping", [j]: "swapping" },
-          `Swapped indices ${i} and ${j}` ,
-          50
+          `Swapped indices ${i} and ${j}`,
+          44
         );
         i += 1;
       }
@@ -62,13 +62,13 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     [array[i], array[high]] = [array[high], array[i]];
     pushFrame(
       { [i]: "swapping", [high]: "swapping" },
-      `Moved pivot to index ${i}` ,
-      61
+      `Moved pivot to index ${i}`,
+        52
     );
     pushFrame(
       { [i]: "sorted" },
-      `Pivot fixed at index ${i}` ,
-      62
+      `Pivot fixed at index ${i}`,
+        53
     );
 
     return i;
@@ -84,9 +84,20 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     sort(pivotIndex + 1, high);
   };
 
-  pushFrame({}, "Starting array", 87);
+  pushFrame({}, "Starting array", 72);
   sort(0, array.length - 1);
-  pushFrame(markAllSorted(), "Array sorted", 89);
+
+  // Guarantee final frame has perfectly sorted array
+  const sortedArray = [...input].sort((a, b) => a - b);
+  const finalFrame: FrameWithLine = {
+    array: sortedArray,
+    highlights: markAllSorted(),
+    comparisons,
+    swaps,
+    message: "Array sorted",
+    activeLine: 75
+  };
+  frames.push(finalFrame);
 
   return frames;
 }

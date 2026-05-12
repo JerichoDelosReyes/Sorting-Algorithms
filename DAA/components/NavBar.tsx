@@ -82,7 +82,7 @@ export default function NavBar() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="text-lg font-semibold tracking-tight">
-          SortViz
+          Sort
         </Link>
 
         <div className="hidden items-center gap-2 md:flex">

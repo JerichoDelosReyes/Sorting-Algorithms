@@ -59,21 +59,21 @@ export default function Controls({
   const speedLabel = SPEED_VALUES[Math.max(0, speed - 1)] ?? SPEED_VALUES[0];
 
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-3">
+    <div className="mt-6 flex flex-col gap-3 sm:flex-wrap sm:flex-row sm:items-center">
       <button
         type="button"
         onClick={onShuffle}
-        className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+        className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
         disabled={isPlaying}
       >
         <RefreshIcon />
-        Shuffle
+        <span className="hidden sm:inline">Shuffle</span>
       </button>
 
       <button
         type="button"
         onClick={onStepBack}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
         disabled={!canStepBack || isPlaying}
       >
         Step Back
@@ -82,7 +82,7 @@ export default function Controls({
       <button
         type="button"
         onClick={onPlayToggle}
-        className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-sm font-semibold text-white shadow-sm"
+        className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow disabled:opacity-50"
       >
         {isPlaying ? "Pause" : "Play"}
       </button>
@@ -90,7 +90,7 @@ export default function Controls({
       <button
         type="button"
         onClick={onStepForward}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
         disabled={!canStepForward || isPlaying}
       >
         Step Forward
@@ -99,37 +99,39 @@ export default function Controls({
       <button
         type="button"
         onClick={onReset}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors"
       >
         Reset
       </button>
 
-      <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm">
-        <span className="text-[var(--color-text-secondary)]">Size</span>
+      <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm sm:w-auto">
+        <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
         <input
           type="range"
           min={10}
-          max={80}
+          max={100}
           value={arraySize}
           onChange={(event) => onArraySizeChange(Number(event.target.value))}
+          className="flex-1 sm:w-20"
         />
-        <span className="text-[var(--color-text-primary)]">{arraySize}</span>
+        <span className="w-8 text-right text-[var(--color-text-primary)]">{arraySize}</span>
       </div>
 
-      <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm">
-        <span className="text-[var(--color-text-secondary)]">Speed</span>
+      <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm sm:w-auto">
+        <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
         <input
           type="range"
           min={1}
           max={5}
           value={speed}
           onChange={(event) => onSpeedChange(Number(event.target.value))}
+          className="flex-1 sm:w-20"
         />
-        <span className="text-[var(--color-text-primary)]">{speedLabel}ms</span>
+        <span className="w-10 text-right text-[var(--color-text-primary)]">{speedLabel}ms</span>
       </div>
 
-      <div className="ml-auto rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm text-[var(--color-text-secondary)]">
-        Frame {Math.min(frameIndex + 1, totalFrames)} of {totalFrames}
+      <div className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm text-[var(--color-text-secondary)]">
+        <span className="hidden sm:inline">Frame </span>{Math.min(frameIndex + 1, totalFrames)}/{totalFrames}
       </div>
     </div>
   );

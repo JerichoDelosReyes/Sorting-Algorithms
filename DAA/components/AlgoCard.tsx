@@ -31,10 +31,14 @@ export default function AlgoCard({ info }: AlgoCardProps) {
       <div className="mt-4 flex items-center gap-2 text-xs">
         <span
           className={`rounded-full px-3 py-1 font-semibold ${
-            info.stable ? "bg-[#E6F6EA] text-[#1F7A3D]" : "bg-[#FFE5E5] text-[#C91C1C]"
+            info.id === "quick"
+              ? "bg-[#E5F0FF] text-[#0A84FF]"
+              : info.stable
+                ? "bg-[#E6F6EA] text-[#1F7A3D]"
+                : "bg-[#FFE5E5] text-[#C91C1C]"
           }`}
         >
-          {info.stable ? "Stable" : "Not Stable"}
+          {info.id === "quick" ? "In-place" : (info.stable ? "Stable" : "Not Stable")}
         </span>
         <span className="rounded-full bg-[#1D1D1F] px-3 py-1 font-semibold text-white">
           {info.complexity.worst}

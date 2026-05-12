@@ -6,9 +6,9 @@ import PageTransition from "../components/PageTransition";
 import { SoundProvider } from "../components/SoundProvider";
 
 export const metadata: Metadata = {
-  title: "SortViz",
+  title: "Sort",
   description:
-    "An interactive comparative analysis of Bubble Sort, Merge Sort, and Quick Sort."
+    "An interactive comparative study of Bubble Sort, Merge Sort, and Quick Sort."
 };
 
 export default function RootLayout({

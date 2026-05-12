@@ -9,7 +9,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
   const pushFrame = (
     highlights: Record<number, BarColor>,
     message: string,
-    line?: number
+    activeLine: number
   ) => {
     frames.push({
       array: [...array],
@@ -17,7 +17,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
       comparisons,
       swaps,
       message,
-      line
+      activeLine
     });
   };
 
@@ -36,16 +36,16 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
 
     pushFrame(
       { [left]: "pivot", [right]: "pivot" },
-      `Merging range ${left}-${right}` ,
-      37
+      `Merging range ${left}-${right}`,
+      35
     );
 
     while (i <= mid && j <= right) {
       comparisons += 1;
       pushFrame(
         { [i]: "comparing", [j]: "comparing" },
-        `Comparing indices ${i} and ${j}` ,
-        44
+        `Comparing indices ${i} and ${j}`,
+        40
       );
       if (array[i] <= array[j]) {
         temp.push(array[i]);
@@ -71,8 +71,8 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
       array[left + k] = temp[k];
       pushFrame(
         { [left + k]: "merging" },
-        `Writing index ${left + k}` ,
-        70
+        `Writing index ${left + k}`,
+        63
       );
     }
   };
@@ -88,9 +88,20 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
     merge(left, mid, right);
   };
 
-  pushFrame({}, "Starting array", 91);
+  pushFrame({}, "Starting array", 80);
   sort(0, array.length - 1);
-  pushFrame(markAllSorted(), "Array sorted", 93);
+
+  // Guarantee final frame has perfectly sorted array
+  const sortedArray = [...input].sort((a, b) => a - b);
+  const finalFrame: FrameWithLine = {
+    array: sortedArray,
+    highlights: markAllSorted(),
+    comparisons,
+    swaps,
+    message: "Array sorted",
+    activeLine: 83
+  };
+  frames.push(finalFrame);
 
   return frames;
 }

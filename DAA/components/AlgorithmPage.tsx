@@ -13,6 +13,7 @@ import { useSound } from "./SoundProvider";
 import AlgoDescription from "./AlgoDescription";
 import CodePanel from "./CodePanel";
 import ComplexityCard from "./ComplexityCard";
+import ComplexityGraph from "./ComplexityGraph";
 import Controls from "./Controls";
 import Visualizer from "./Visualizer";
 
@@ -39,6 +40,46 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
   const previousCounts = useRef({ comparisons: 0, swaps: 0 });
+  const leftPanelRef = useRef<HTMLDivElement | null>(null);
+  const [codePanelHeight, setCodePanelHeight] = useState<number | null>(null);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const handleChange = () => setIsLargeScreen(mediaQuery.matches);
+
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (!isLargeScreen || !leftPanelRef.current) {
+      setCodePanelHeight(null);
+      return;
+    }
+
+    const element = leftPanelRef.current;
+    const updateHeight = () => {
+      const nextHeight = Math.round(element.getBoundingClientRect().height);
+      setCodePanelHeight((prev) => (prev === nextHeight ? prev : nextHeight));
+    };
+
+    updateHeight();
+
+    if (typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [isLargeScreen]);
 
   useEffect(() => {
     const nextFrames = RECORDERS[algorithmId](array);
@@ -129,22 +170,22 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
     return [
       { label: "Worst", value: info.complexity.worst },
       { label: "Space", value: info.complexity.space },
-      { label: info.stable ? "Stable" : "Not Stable", value: info.stable }
+      { label: algorithmId === "quick" ? "In-place" : info.stable ? "Stable" : "Not Stable", value: true }
     ];
-  }, [info]);
+  }, [info, algorithmId]);
 
   const activeFrame = frames[Math.min(currentFrame, frames.length - 1)];
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-6 pb-16">
-      <header className="border-b border-[var(--color-border)] pb-6">
-        <h1 className="text-3xl font-semibold">{info.name}</h1>
-        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+    <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
+      <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
+        <h1 className="text-2xl font-semibold sm:text-3xl">{info.name}</h1>
+        <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
           {info.shortDescription} | Worst {info.complexity.worst} | Space
           {" "}
           {info.complexity.space}
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
           {headerBadges.map((badge) => (
             <span
               key={badge.label}
@@ -153,12 +194,14 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
                   ? "bg-[#FFE5E5] text-[#C91C1C]"
                   : badge.label === "Space"
                     ? "bg-[#E5F0FF] text-[#0A84FF]"
-                    : badge.value
-                      ? "bg-[#E6F6EA] text-[#1F7A3D]"
-                      : "bg-[#FFE5E5] text-[#C91C1C]"
+                    : algorithmId === "quick"
+                      ? "bg-[#E5F0FF] text-[#0A84FF]"
+                      : badge.value
+                        ? "bg-[#E6F6EA] text-[#1F7A3D]"
+                        : "bg-[#FFE5E5] text-[#C91C1C]"
               }`}
             >
-              {badge.label === "Stable" || badge.label === "Not Stable"
+              {badge.label === "Stable" || badge.label === "Not Stable" || badge.label === "In-place"
                 ? badge.label
                 : `${badge.label}: ${badge.value}`}
             </span>
@@ -166,8 +209,11 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
         </div>
       </header>
 
-      <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
-        <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
+      <div className="mt-8 grid items-start gap-4 md:gap-6 lg:grid-cols-2">
+        <div
+          ref={leftPanelRef}
+          className="flex flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-card backdrop-blur sm:p-6"
+        >
           <Visualizer
             frames={frames}
             currentFrameIndex={currentFrame}
@@ -191,8 +237,11 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
           />
         </div>
 
-        <div className="h-full">
-          <CodePanel code={info.code} currentLine={activeFrame?.line} />
+        <div
+          className="flex min-h-0 w-full"
+          style={codePanelHeight ? { height: codePanelHeight } : undefined}
+        >
+          <CodePanel code={info.code} activeLine={activeFrame?.activeLine} />
         </div>
       </div>
 
@@ -201,16 +250,20 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
         <AlgoDescription algorithmId={algorithmId} />
       </div>
 
-      <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+      <div className="mt-8">
+        <ComplexityGraph highlightAlgorithm={algorithmId} />
+      </div>
+
+      <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm"
+          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors text-center"
         >
           Back to Home
         </Link>
         <Link
           href="/compare"
-          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white"
+          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:shadow-lg transition-shadow text-center"
         >
           Compare All Algorithms
         </Link>

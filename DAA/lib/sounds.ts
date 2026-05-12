@@ -12,8 +12,8 @@ class SoundEngine {
         webkitAudioContext?: typeof AudioContext;
       };
       const AudioContextClass =
-        (window as WindowWithWebkit).AudioContext ||
-        (window as WindowWithWebkit).webkitAudioContext;
+        (window.AudioContext as typeof AudioContext) ||
+        ((window as WindowWithWebkit).webkitAudioContext as typeof AudioContext);
 
       if (!AudioContextClass) {
         return;
