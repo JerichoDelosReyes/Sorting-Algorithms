@@ -25,6 +25,7 @@ export default function ComparePage() {
   const [globalFrame, setGlobalFrame] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
+  const [isCompletionDismissed, setIsCompletionDismissed] = useState(false);
 
   const frames = useMemo<Record<Algorithm, FrameWithLine[]>>(() => {
     return {
@@ -68,10 +69,12 @@ export default function ComparePage() {
   }, [enabled, globalFrame, isPlaying, maxFrames, speed]);
 
   const handleShuffle = useCallback(() => {
+    setIsCompletionDismissed(false);
     setBaseArray(generateRandomArray(arraySize));
   }, [arraySize]);
 
   const handleReset = useCallback(() => {
+    setIsCompletionDismissed(false);
     setGlobalFrame(0);
     setIsPlaying(false);
   }, []);
@@ -84,8 +87,13 @@ export default function ComparePage() {
   }, [isPlaying]);
 
   const handleSizeChange = useCallback((value: number) => {
+    setIsCompletionDismissed(false);
     setArraySize(value);
     setBaseArray(generateRandomArray(value));
+  }, []);
+
+  const handleDismissCompletion = useCallback(() => {
+    setIsCompletionDismissed(true);
   }, []);
 
   const items = useMemo(() => {
@@ -211,7 +219,7 @@ export default function ComparePage() {
       </div>
 
       <AnimatePresence>
-        {allDone ? (
+        {allDone && !isCompletionDismissed ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm shadow-xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -222,7 +230,7 @@ export default function ComparePage() {
             >
               <button
                 type="button"
-                onClick={handleReset}
+                onClick={handleDismissCompletion}
                 className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-border)] hover:text-[var(--color-text-primary)] transition-colors"
                 aria-label="Close"
               >

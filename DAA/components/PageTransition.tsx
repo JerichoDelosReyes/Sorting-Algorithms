@@ -19,7 +19,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -4 }}
         transition={{ duration: 0.3 }}
-        className="min-h-screen pt-24"
+        className="flex-1 pt-24"
       >
         {children}
       </motion.main>

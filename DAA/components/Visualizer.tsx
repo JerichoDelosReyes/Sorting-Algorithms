@@ -17,6 +17,7 @@ interface VisualizerProps {
   currentFrameIndex: number;
   totalFrames: number;
   className?: string;
+  viewportClassName?: string;
 }
 
 function drawRoundedRect(
@@ -52,7 +53,8 @@ export default function Visualizer({
   frames,
   currentFrameIndex,
   totalFrames,
-  className
+  className,
+  viewportClassName
 }: VisualizerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -133,7 +135,10 @@ export default function Visualizer({
 
   return (
     <div className={className ?? "w-full"}>
-      <div ref={containerRef} className="aspect-[16/9] w-full max-h-72">
+      <div
+        ref={containerRef}
+        className={viewportClassName ?? "aspect-[16/9] w-full max-h-72"}
+      >
         <canvas ref={canvasRef} className="h-full w-full" />
       </div>
       <p className="mt-3 text-xs text-[var(--color-text-secondary)] sm:text-sm">

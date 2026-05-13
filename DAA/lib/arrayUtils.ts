@@ -1,12 +1,12 @@
 export function generateRandomArray(
-  size: number,
-  min = 20,
-  max = 260
+  size: number
 ): number[] {
-  const array: number[] = [];
-  for (let i = 0; i < size; i += 1) {
-    const value = Math.floor(Math.random() * (max - min + 1)) + min;
-    array.push(value);
+  const array = Array.from({ length: size }, (_, index) => index + 1);
+
+  for (let index = array.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [array[index], array[swapIndex]] = [array[swapIndex], array[index]];
   }
+
   return array;
 }
