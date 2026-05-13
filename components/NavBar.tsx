@@ -105,7 +105,6 @@ export default function NavBar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [flashTheme, setFlashTheme] = useState<"light" | "dark" | null>(null);
   const { enabled, toggle } = useSound();
 
   useEffect(() => {
@@ -118,8 +117,6 @@ export default function NavBar() {
     document.documentElement.style.colorScheme = nextTheme;
     localStorage.setItem("sort-theme", nextTheme);
     setTheme(nextTheme);
-    setFlashTheme(nextTheme);
-    window.setTimeout(() => setFlashTheme(null), 450);
   };
 
   const toggleTheme = () => {
@@ -133,14 +130,6 @@ export default function NavBar() {
       className="fixed top-0 left-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-surface)]"
       style={{ backdropFilter: "blur(20px)" }}
     >
-      {flashTheme ? (
-        <div
-          className="theme-flash fixed inset-0"
-          style={{ background: flashTheme === "dark" ? "rgba(0,0,0,0.88)" : "rgba(255,255,255,0.9)" }}
-          aria-hidden="true"
-        />
-      ) : null}
-
       <div className="mx-auto relative flex h-16 max-w-6xl items-center px-6">
         <Link href="/" className="text-lg font-semibold tracking-tight">
           Sort

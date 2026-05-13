@@ -102,26 +102,6 @@ a {
   text-decoration: none;
 }
 
-@keyframes themeFlash {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  35% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-}
-
-.theme-flash {
-  animation: themeFlash 420ms ease-out;
-  pointer-events: none;
-  z-index: 60;
-}
-
 button,
 input,
 select,
