@@ -77,7 +77,7 @@ export default function NavBar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 z-50 w-full border-b border-[rgba(0,0,0,0.08)] bg-[rgba(255,255,255,0.85)]"
+      className="fixed top-0 left-0 z-50 w-full border-b border-[var(--color-border)] bg-[rgba(255,255,255,0.88)]"
       style={{ backdropFilter: "blur(20px)" }}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
@@ -92,7 +92,7 @@ export default function NavBar() {
               href={item.href}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 isActive(item.href)
-                  ? "bg-[#1D1D1F] text-white"
+                  ? "bg-black text-white shadow-sm"
                   : "text-[var(--color-text-primary)] hover:bg-white/70"
               }`}
             >
@@ -127,7 +127,7 @@ export default function NavBar() {
       </div>
 
       {menuOpen ? (
-        <div className="border-t border-[rgba(0,0,0,0.08)] bg-[rgba(255,255,255,0.95)] px-6 py-4 md:hidden">
+        <div className="border-t border-[var(--color-border)] bg-[rgba(255,255,255,0.95)] px-6 py-4 md:hidden">
           <div className="flex flex-col gap-2">
             {navItems.map((item) => (
               <Link
@@ -135,7 +135,7 @@ export default function NavBar() {
                 href={item.href}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? "bg-[#1D1D1F] text-white"
+                    ? "bg-black text-white shadow-sm"
                     : "text-[var(--color-text-primary)] hover:bg-white/70"
                 }`}
                 onClick={() => setMenuOpen(false)}

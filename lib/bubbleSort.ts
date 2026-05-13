@@ -29,7 +29,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     return sortedHighlights;
   };
 
-  pushFrame({}, "Starting array", 28);
+  pushFrame({}, "Starting array", 35);
 
   for (let i = 0; i < array.length; i += 1) {
     // Bubble the largest value to the end of the unsorted section.
@@ -38,7 +38,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
       pushFrame(
         { [j]: "comparing", [j + 1]: "comparing" },
         `Comparing indices ${j} and ${j + 1}`,
-        33
+        47
       );
 
       if (array[j] > array[j + 1]) {
@@ -47,7 +47,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
         pushFrame(
           { [j]: "swapping", [j + 1]: "swapping" },
           `Swapped indices ${j} and ${j + 1}`,
-          37
+          49
         );
       }
     }
@@ -56,7 +56,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     pushFrame(
       { [sortedIndex]: "sorted" },
       `Index ${sortedIndex} is in final position`,
-        42
+        58
     );
   }
 
@@ -68,7 +68,7 @@ export function recordBubbleSort(input: number[]): FrameWithLine[] {
     comparisons,
     swaps,
     message: "Array sorted",
-    activeLine: 46
+    activeLine: 64
   };
   frames[frames.length - 1] = finalFrame;
 

@@ -45,13 +45,13 @@ export default function HomePage() {
       <style>{`
         @keyframes breathe {
           0% {
-            background: radial-gradient(circle at 50% 50%, #f5f5f7 0%, #eef2ff 65%);
+            background: radial-gradient(circle at 50% 50%, #faf7f1 0%, #f3ede4 65%);
           }
           50% {
-            background: radial-gradient(circle at 50% 50%, #f0fdf4 0%, #f5f5f7 65%);
+            background: radial-gradient(circle at 50% 50%, #f6f2eb 0%, #eef7ef 65%);
           }
           100% {
-            background: radial-gradient(circle at 50% 50%, #f5f5f7 0%, #eef2ff 65%);
+            background: radial-gradient(circle at 50% 50%, #faf7f1 0%, #f3ede4 65%);
           }
         }
         
@@ -102,7 +102,7 @@ export default function HomePage() {
               </button>
               <Link
                 href="/compare"
-                className="rounded-full border border-[var(--color-border)] bg-white px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface)]"
+                className="rounded-full border border-[var(--color-border)] bg-white/80 px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-white"
               >
                 Compare All
               </Link>
@@ -112,7 +112,7 @@ export default function HomePage() {
 
         {/* What is a Sorting Algorithm Section */}
         <section className="mt-16 md:mt-24">
-          <div className="rounded-[20px] border border-[var(--color-border)] bg-white/50 px-8 py-12 shadow-card backdrop-blur md:px-12 md:py-16">
+          <div className="rounded-[20px] border border-[var(--color-border)] bg-white px-8 py-12 shadow-card md:px-12 md:py-16">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
                 <h2 className="text-3xl font-bold md:text-4xl">What is a Sorting Algorithm?</h2>
@@ -120,11 +120,11 @@ export default function HomePage() {
                   A sorting algorithm is a set of instructions for arranging data in a chosen order, usually ascending or descending. It is a core technique in computer science that helps software organize and process information efficiently.
                 </p>
               </div>
-              <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-[var(--color-surface)] p-6">
+              <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-white p-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div
                     key={i}
-                    className="bar-animate w-full rounded-t-[4px] bg-gradient-to-t from-[#0A84FF] to-[#5AC8FA]"
+                    className="bar-animate w-full rounded-t-[4px] bg-[#0A84FF]"
                     style={{
                       height: `${20 + i * 13}%`,
                       animationDelay: `${i * 0.1}s`
@@ -162,7 +162,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="rounded-[20px] border border-[var(--color-border)] bg-white/80 px-8 py-10 shadow-card backdrop-blur">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#E5E5FF]">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF4D6]">
                 <svg
                   className="h-6 w-6 text-[#BF5AF2]"
                   fill="none"
@@ -203,7 +203,7 @@ export default function HomePage() {
               variants={itemVariants}
               className="lg:col-span-3"
             >
-              <div className="flex flex-col items-center justify-between gap-6 rounded-[20px] bg-[#1D1D1F] px-8 py-8 text-center text-white shadow-card md:flex-row md:text-left">
+              <div className="flex flex-col items-center justify-between gap-6 rounded-[20px] border border-[var(--color-border)] bg-[#1D1D1F] px-8 py-8 text-center text-white shadow-card md:flex-row md:text-left">
                 <div>
                   <h3 className="text-xl font-semibold">Compare All Three</h3>
                   <p className="mt-2 text-sm text-white/70">

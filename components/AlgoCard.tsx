@@ -29,7 +29,7 @@ export default function AlgoCard({ info }: AlgoCardProps) {
         <span
           className={`rounded-full px-3 py-1 font-semibold ${
             info.id === "quick"
-              ? "bg-[#E5F0FF] text-[#0A84FF]"
+              ? "bg-[#EEF2F7] text-[#6B7280]"
               : info.stable
                 ? "bg-[#E6F6EA] text-[#1F7A3D]"
                 : "bg-[#FFE5E5] text-[#C91C1C]"
@@ -37,7 +37,7 @@ export default function AlgoCard({ info }: AlgoCardProps) {
         >
           {info.id === "quick" ? "In-place" : (info.stable ? "Stable" : "Not Stable")}
         </span>
-        <span className="rounded-full bg-[#1D1D1F] px-3 py-1 font-semibold text-white">
+        <span className="rounded-full border border-[var(--color-border)] bg-white px-3 py-1 font-semibold text-[var(--color-text-primary)]">
           {info.complexity.worst}
         </span>
       </div>
@@ -45,7 +45,7 @@ export default function AlgoCard({ info }: AlgoCardProps) {
       <div className="mt-auto pt-6">
         <Link
           href={info.slug}
-          className="block w-full rounded-full bg-[var(--color-accent)] px-4 py-3 text-center text-sm font-semibold text-white transition-shadow hover:shadow-lg"
+          className="block w-full rounded-full bg-[#0A84FF] px-4 py-3 text-center text-sm font-semibold text-white transition-shadow hover:shadow-lg"
         >
           Explore Algorithm
         </Link>

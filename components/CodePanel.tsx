@@ -40,7 +40,7 @@ const COLOR_MAP: Record<TokenType, string> = {
   string: "#FF9F0A",
   number: "#BF5AF2",
   plain: "#E5E5EA",
-  function: "#5AC8FA"
+  function: "#D97706"
 };
 
 function findCommentIndex(line: string): number {
@@ -136,18 +136,18 @@ export default function CodePanel({ code, activeLine, fileName = "Algorithm.ts" 
   };
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card backdrop-blur">
-      <div className="flex items-center justify-between border-b border-[#2C2C2E] bg-[#1C1C1E] px-4 py-3 flex-shrink-0">
+    <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-[#2c2c2e] bg-[#111113] shadow-card">
+      <div className="flex items-center justify-between border-b border-[#2c2c2e] bg-[#17171a] px-4 py-3 flex-shrink-0">
         <div className="flex gap-2">
           <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
           <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
           <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
         </div>
-        <div className="text-xs font-medium text-white/50 font-mono">{fileName}</div>
+        <div className="text-xs font-medium text-white/60 font-mono">{fileName}</div>
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/20 transition-colors"
+          className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80 hover:bg-white/10 transition-colors"
         >
           {copied ? (
             <span className="inline-flex items-center gap-1">
@@ -173,7 +173,7 @@ export default function CodePanel({ code, activeLine, fileName = "Algorithm.ts" 
       </div>
       <div
         ref={scrollContainerRef}
-        className="min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]"
+        className="min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain scrollbar-thin scrollbar-thumb-[#4b4b4d] scrollbar-track-[#1a1a1d]"
       >
         <pre className="m-0 w-max min-w-full text-xs leading-6 text-white/90 font-mono">
           {linesArray.map((line, index) => {
@@ -185,13 +185,15 @@ export default function CodePanel({ code, activeLine, fileName = "Algorithm.ts" 
               <div
                 key={`${lineNumber}`}
                 ref={isActive ? activeLineRef : null}
-                className={`flex gap-3 px-4 py-1 ${
+                className={`flex gap-3 px-4 py-1.5 transition-colors duration-150 ${
                   isActive
-                    ? "border-l-3 border-[#0A84FF] bg-[rgba(10,132,255,0.15)]"
-                    : "border-l-3 border-transparent"
+                    ? "border-l-[3px] border-[#0A84FF] bg-[#0A84FF]/10"
+                    : "border-l-[3px] border-transparent hover:bg-white/[0.04]"
                 }`}
               >
-                <span className="w-8 text-right text-white/40 flex-shrink-0">{lineNumber}</span>
+                <span className="w-8 text-right text-white/35 flex-shrink-0 select-none">
+                  {lineNumber}
+                </span>
                 <code className="whitespace-pre flex-1 min-w-max">
                   {tokens.map((token, tokenIndex) => (
                     <span

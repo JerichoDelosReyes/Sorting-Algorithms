@@ -42,96 +42,68 @@ function RefreshIcon() {
 
 export default function Controls({
   isPlaying,
-  onPlayToggle,
   onShuffle,
-  onStepBack,
-  onStepForward,
   onReset,
-  canStepBack,
-  canStepForward,
   arraySize,
   onArraySizeChange,
   speed,
   onSpeedChange,
-  frameIndex,
-  totalFrames
-}: ControlsProps) {
+  showShuffleReset = true,
+}: Omit<ControlsProps, 'onPlayToggle' | 'onStepBack' | 'onStepForward' | 'canStepBack' | 'canStepForward' | 'frameIndex' | 'totalFrames'> & { showShuffleReset?: boolean }) {
   const speedLabel = SPEED_VALUES[Math.max(0, speed - 1)] ?? SPEED_VALUES[0];
 
   return (
-    <div className="mt-6 flex flex-col gap-3 sm:flex-wrap sm:flex-row sm:items-center">
-      <button
-        type="button"
-        onClick={onShuffle}
-        className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
-        disabled={isPlaying}
-      >
-        <RefreshIcon />
-        <span className="hidden sm:inline">Shuffle</span>
-      </button>
+    <div className="mt-6 rounded-[18px] border border-[var(--color-border)] bg-white/75 p-4 shadow-sm backdrop-blur">
+      <div className="flex flex-col gap-4">
+        {showShuffleReset && (
+          <div className="flex flex-wrap gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={onShuffle}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50 sm:flex-none sm:px-5"
+              disabled={isPlaying}
+            >
+              <RefreshIcon />
+              <span>Shuffle</span>
+            </button>
 
-      <button
-        type="button"
-        onClick={onStepBack}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
-        disabled={!canStepBack || isPlaying}
-      >
-        Step Back
-      </button>
+            <button
+              type="button"
+              onClick={onReset}
+              className="inline-flex flex-1 items-center justify-center rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-colors sm:flex-none sm:px-5"
+            >
+              Reset Space
+            </button>
+          </div>
+        )}
 
-      <button
-        type="button"
-        onClick={onPlayToggle}
-        className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow disabled:opacity-50"
-      >
-        {isPlaying ? "Pause" : "Play"}
-      </button>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-3">
+            <span className="text-sm font-medium text-[var(--color-text-secondary)]">Size</span>
+            <input
+              type="range"
+              min={10}
+              max={100}
+              value={arraySize}
+              onChange={(event) => onArraySizeChange(Number(event.target.value))}
+              className="flex-1 accent-[var(--color-accent)]"
+            />
+            <span className="w-8 text-right text-sm font-mono text-[var(--color-text-primary)]">{arraySize}</span>
+          </div>
 
-      <button
-        type="button"
-        onClick={onStepForward}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
-        disabled={!canStepForward || isPlaying}
-      >
-        Step Forward
-      </button>
-
-      <button
-        type="button"
-        onClick={onReset}
-        className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors"
-      >
-        Reset
-      </button>
-
-      <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm sm:w-auto">
-        <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
-        <input
-          type="range"
-          min={10}
-          max={100}
-          value={arraySize}
-          onChange={(event) => onArraySizeChange(Number(event.target.value))}
-          className="flex-1 sm:w-20"
-        />
-        <span className="w-8 text-right text-[var(--color-text-primary)]">{arraySize}</span>
-      </div>
-
-      <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm sm:w-auto">
-        <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
-        <input
-          type="range"
-          min={1}
-          max={5}
-          value={speed}
-          onChange={(event) => onSpeedChange(Number(event.target.value))}
-          className="flex-1 sm:w-20"
-        />
-        <span className="w-10 text-right text-[var(--color-text-primary)]">{speedLabel}ms</span>
-      </div>
-
-      <div className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm text-[var(--color-text-secondary)]">
-        <span className="hidden sm:inline">Frame </span>{Math.min(frameIndex + 1, totalFrames)}/{totalFrames}
+          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-3">
+            <span className="text-sm font-medium text-[var(--color-text-secondary)]">Speed</span>
+            <input
+              type="range"
+              min={1}
+              max={5}
+              value={speed}
+              onChange={(event) => onSpeedChange(Number(event.target.value))}
+              className="flex-1 accent-[var(--color-accent)]"
+            />
+            <span className="w-12 text-right text-sm font-mono text-[var(--color-text-primary)]">{speedLabel}ms</span>
+          </div>
+        </div>
       </div>
     </div>
   );

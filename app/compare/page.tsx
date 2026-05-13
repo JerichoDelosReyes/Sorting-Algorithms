@@ -96,6 +96,20 @@ export default function ComparePage() {
     setIsCompletionDismissed(true);
   }, []);
 
+  const handleStepBack = useCallback(() => {
+    if (isPlaying) {
+      return;
+    }
+    setGlobalFrame((prev) => Math.max(prev - 1, 0));
+  }, [isPlaying]);
+
+  const handleStepForward = useCallback(() => {
+    if (isPlaying) {
+      return;
+    }
+    setGlobalFrame((prev) => Math.min(prev + 1, maxFrames - 1));
+  }, [isPlaying, maxFrames]);
+
   const items = useMemo(() => {
     return ALGORITHMS.map((id) => {
       const framesForAlgo = frames[id];
@@ -151,63 +165,99 @@ export default function ComparePage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6">
       <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
-        <h1 className="text-2xl font-semibold sm:text-3xl">Algorithm Comparison</h1>
-        <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
-          All three algorithms run simultaneously on the same array.
-        </p>
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold sm:text-3xl">Algorithm Comparison</h1>
+            <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
+              All three algorithms run simultaneously on the same array.
+            </p>
+          </div>
+          <div className="flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 gap-4 shadow-card backdrop-blur flex-shrink-0">
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={handleStepBack}
+                disabled={globalFrame <= 0 || isPlaying}
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+              </button>
+              <button
+                type="button"
+                onClick={handlePlayToggle}
+                className="rounded-full bg-[#0a84ff] px-3 py-2 text-white transition-transform hover:scale-105"
+              >
+                {isPlaying ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={handleStepForward}
+                disabled={globalFrame >= maxFrames - 1 || isPlaying}
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+              </button>
+            </div>
+            <div className="w-px h-6 bg-[var(--color-border)]"></div>
+            <div className="text-xs font-mono text-[var(--color-text-secondary)] pr-2">
+              Frame {globalFrame + 1} of {maxFrames}
+            </div>
+          </div>
+        </div>
       </header>
 
-      <div className="mt-4 grid gap-3 sm:mt-6 sm:flex sm:flex-wrap sm:items-center">
-        <button
-          type="button"
-          onClick={handleShuffle}
-          className="w-full rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:w-auto sm:text-sm"
-          disabled={isPlaying}
-        >
-          Shuffle
-        </button>
-        <button
-          type="button"
-          onClick={handlePlayToggle}
-          className="w-full rounded-full bg-[var(--color-accent)] px-5 py-2 text-xs font-semibold text-white shadow-sm transition-shadow hover:shadow-md sm:w-auto sm:text-sm"
-        >
-          {isPlaying ? "Pause" : "Play"}
-        </button>
-        <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:w-auto sm:text-sm">
-          <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
-          <input
-            type="range"
-            min={1}
-            max={5}
-            value={speed}
-            onChange={(event) => setSpeed(Number(event.target.value))}
-            className="flex-1 sm:w-20"
-          />
-          <span className="w-10 text-right text-[var(--color-text-primary)]">
-            {SPEED_VALUES[Math.max(0, speed - 1)]}ms
-          </span>
+      <div className="mt-4 grid gap-3 sm:mt-6 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="flex w-full gap-3 sm:w-auto sm:items-center sm:flex-wrap">
+          <div className="flex flex-1 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:flex-none sm:text-sm">
+            <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
+            <input
+              type="range"
+              min={1}
+              max={5}
+              value={speed}
+              onChange={(event) => setSpeed(Number(event.target.value))}
+              className="flex-1 sm:w-20"
+            />
+            <span className="w-10 text-right text-[var(--color-text-primary)]">
+              {SPEED_VALUES[Math.max(0, speed - 1)]}ms
+            </span>
+          </div>
+
+          <div className="flex flex-1 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:flex-none sm:text-sm">
+            <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
+            <input
+              type="range"
+              min={10}
+              max={100}
+              value={arraySize}
+              onChange={(event) => handleSizeChange(Number(event.target.value))}
+              className="flex-1 sm:w-20"
+            />
+            <span className="w-8 text-right text-[var(--color-text-primary)]">{arraySize}</span>
+          </div>
         </div>
 
-        <div className="flex w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:w-auto sm:text-sm">
-          <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
-          <input
-            type="range"
-            min={10}
-            max={100}
-            value={arraySize}
-            onChange={(event) => handleSizeChange(Number(event.target.value))}
-            className="flex-1 sm:w-20"
-          />
-          <span className="w-8 text-right text-[var(--color-text-primary)]">{arraySize}</span>
+        <div className="flex w-full gap-3 sm:w-auto sm:flex-wrap">
+          <button
+            type="button"
+            onClick={handleShuffle}
+            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:flex-none sm:text-sm"
+            disabled={isPlaying}
+          >
+            Shuffle
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:flex-none sm:text-sm"
+          >
+            Reset
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={handleReset}
-          className="w-full rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:w-auto sm:text-sm"
-        >
-          Reset
-        </button>
       </div>
 
       <div className="mt-8">
@@ -220,7 +270,7 @@ export default function ComparePage() {
 
       <AnimatePresence>
         {allDone && !isCompletionDismissed ? (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm shadow-xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm shadow-xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -283,7 +333,7 @@ export default function ComparePage() {
                 <button
                   type="button"
                   onClick={handleShuffle}
-                  className="rounded-full bg-[var(--color-accent)] px-8 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
+                  className="rounded-full bg-[#0A84FF] px-8 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Shuffle & Try Again
                 </button>

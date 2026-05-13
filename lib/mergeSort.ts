@@ -37,7 +37,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
     pushFrame(
       { [left]: "pivot", [right]: "pivot" },
       `Merging range ${left}-${right}`,
-      35
+      32
     );
 
     while (i <= mid && j <= right) {
@@ -45,7 +45,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
       pushFrame(
         { [i]: "comparing", [j]: "comparing" },
         `Comparing indices ${i} and ${j}`,
-        40
+        50
       );
       if (array[i] <= array[j]) {
         temp.push(array[i]);
@@ -72,7 +72,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
       pushFrame(
         { [left + k]: "merging" },
         `Writing index ${left + k}`,
-        63
+        71
       );
     }
   };
@@ -88,7 +88,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
     merge(left, mid, right);
   };
 
-  pushFrame({}, "Starting array", 80);
+  pushFrame({}, "Starting array", 92);
   sort(0, array.length - 1);
 
   // Guarantee final frame has perfectly sorted array
@@ -99,7 +99,7 @@ export function recordMergeSort(input: number[]): FrameWithLine[] {
     comparisons,
     swaps,
     message: "Array sorted",
-    activeLine: 83
+    activeLine: 95
   };
   frames.push(finalFrame);
 

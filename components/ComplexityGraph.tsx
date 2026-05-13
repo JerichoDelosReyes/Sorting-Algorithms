@@ -113,7 +113,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
   const legendItems = [
     {
       label: "Bubble O(n²)",
-      color: "#FF6B35",
+      color: "#D97706",
       dashed: false,
       dimmed: Boolean(highlightAlgorithm && !isBubbleHighlighted)
     },
@@ -131,7 +131,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
     },
     {
       label: "Quick Worst O(n²)",
-      color: "#FF6B35",
+      color: "#4B5563",
       dashed: true,
       dimmed: Boolean(highlightAlgorithm && !isQuickHighlighted)
     }
@@ -249,7 +249,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
           <path
             d={bubblePath}
             fill="none"
-            stroke="#FF6B35"
+            stroke="#D97706"
             strokeWidth={!highlightAlgorithm || isBubbleHighlighted ? 3 : 2}
             opacity={!highlightAlgorithm || isBubbleHighlighted ? 1 : 0.4}
             className="transition-all"
@@ -259,7 +259,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
           <path
             d={quickWorstPath}
             fill="none"
-            stroke="#FF6B35"
+            stroke="#4B5563"
             strokeWidth={!highlightAlgorithm || isQuickHighlighted ? 3 : 2}
             strokeDasharray="6,4"
             opacity={!highlightAlgorithm || isQuickHighlighted ? 1 : 0.3}

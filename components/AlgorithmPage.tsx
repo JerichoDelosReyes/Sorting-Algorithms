@@ -130,36 +130,68 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
     return [
       { label: "Worst", value: info.complexity.worst },
       { label: "Space", value: info.complexity.space },
-      { label: algorithmId === "quick" ? "In-place" : info.stable ? "Stable" : "Not Stable", value: true }
+      { label: info.stable ? "Stable" : "Not Stable", value: true }
     ];
-  }, [info, algorithmId]);
+  }, [info]);
 
   const activeFrame = frames[Math.min(currentFrame, frames.length - 1)];
+
+  const badgeStyles: Record<string, string> = {
+    Worst: "rounded-full border border-[#d94b4b]/20 bg-[#d94b4b]/12 px-4 py-1.5 text-xs font-semibold text-[#d94b4b]",
+    Space: "rounded-full border border-[#d4a017]/25 bg-[#d4a017]/16 px-4 py-1.5 text-xs font-semibold text-[#d4a017]",
+    Stable: "rounded-full border border-[#2f8f5b]/20 bg-[#2f8f5b]/12 px-4 py-1.5 text-xs font-semibold text-[#2f8f5b]",
+    "Not Stable": "rounded-full border border-[#8a8f98]/20 bg-[#8a8f98]/12 px-4 py-1.5 text-xs font-semibold text-[#8a8f98]"
+  };
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
       <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
-        <h1 className="text-2xl font-semibold sm:text-3xl">{info.name}</h1>
-        <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
-          {info.shortDescription} | Worst {info.complexity.worst} | Space
-          {" "}
-          {info.complexity.space}
-        </p>
+        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:items-center">
+          <h1 className="text-2xl font-semibold sm:text-4xl font-sans">{info.name}</h1>
+          <div className="flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 gap-4 shadow-card backdrop-blur">
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={handleStepBack}
+                disabled={currentFrame <= 0 || isPlaying}
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+              </button>
+              <button
+                type="button"
+                onClick={handlePlayToggle}
+                className="rounded-full bg-[#0a84ff] px-3 py-2 text-white transition-transform hover:scale-105"
+              >
+                {isPlaying ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={handleStepForward}
+                disabled={currentFrame >= frames.length - 1 || isPlaying}
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+              </button>
+            </div>
+            <div className="w-px h-6 bg-[var(--color-border)]"></div>
+            <div className="text-xs font-mono text-[var(--color-text-secondary)] pr-2">
+              Frame {Math.min(currentFrame + 1, frames.length)} of {frames.length}
+            </div>
+          </div>
+        </div>
+
         <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
           {headerBadges.map((badge) => (
             <span
               key={badge.label}
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                badge.label === "Worst"
-                  ? "bg-[#FFE5E5] text-[#C91C1C]"
-                  : badge.label === "Space"
-                    ? "bg-[#FFF4CE] text-[#B47804]"
-                    : badge.label === "In-place" || badge.label === "Stable"
-                      ? "bg-[#E6F6EA] text-[#1F7A3D]"
-                      : "bg-[#FFE5E5] text-[#C91C1C]"
-              }`}
+              className={badgeStyles[badge.label] ?? badgeStyles["Not Stable"]}
             >
-              {badge.label === "Stable" || badge.label === "Not Stable" || badge.label === "In-place"
+              {badge.label === "Stable" || badge.label === "Not Stable"
                 ? badge.label
                 : `${badge.label}: ${badge.value}`}
             </span>
@@ -169,14 +201,30 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
 
       <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-[5fr_3fr] xl:grid-cols-[2fr_1fr] lg:items-stretch">
         <div className="flex min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card backdrop-blur lg:h-[36rem] overflow-hidden">
-          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 bg-black/5 flex-shrink-0">
+          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 bg-white/60 flex-shrink-0">
             <div className="flex gap-2">
               <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
               <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
               <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
             </div>
             <div className="text-xs font-medium text-[var(--color-text-secondary)] font-mono">Visualizer.canvas</div>
-            <div className="w-12"></div> {/* Spacer for centering */}
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleShuffle}
+                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1" style={{ display: 'inline' }}><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
+                Shuffle
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50"
+              >
+                Reset
+              </button>
+            </div>
           </div>
           <div className="flex flex-col flex-1 p-4 sm:p-6 pb-6 min-h-0 overflow-y-auto">
             <Visualizer
@@ -187,19 +235,13 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
             <div className="mt-auto pt-4 flex-shrink-0">
               <Controls
                 isPlaying={isPlaying}
-                onPlayToggle={handlePlayToggle}
                 onShuffle={handleShuffle}
-                onStepBack={handleStepBack}
-                onStepForward={handleStepForward}
                 onReset={handleReset}
-                canStepBack={currentFrame > 0}
-                canStepForward={currentFrame < frames.length - 1}
                 arraySize={arraySize}
                 onArraySizeChange={handleSizeChange}
                 speed={speed}
                 onSpeedChange={setSpeed}
-                frameIndex={currentFrame}
-                totalFrames={frames.length}
+                showShuffleReset={false}
               />
             </div>
           </div>
@@ -212,7 +254,6 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
 
       <div className="mt-8 flex flex-col gap-6">
         <ComplexityCard algorithmId={algorithmId} />
-        <AlgoDescription algorithmId={algorithmId} />
       </div>
 
       <div className="mt-8">
@@ -222,13 +263,13 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
       <footer className="mt-12 flex flex-col gap-3 border-t border-[var(--color-border)] pt-8 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
-          className="rounded-full border border-[var(--color-border)] bg-white px-6 py-3 text-sm font-semibold hover:bg-[var(--color-surface)] transition-colors text-center"
+          className="rounded-full border border-[var(--color-border)] bg-white/80 px-6 py-3 text-sm font-semibold hover:bg-white transition-colors text-center"
         >
           Back to Home
         </Link>
         <Link
           href="/compare"
-          className="rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:shadow-lg transition-shadow text-center"
+          className="rounded-full bg-[#0a84ff] px-6 py-3 text-sm font-semibold text-white hover:shadow-lg transition-shadow text-center"
         >
           Compare All Algorithms
         </Link>

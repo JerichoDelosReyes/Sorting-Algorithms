@@ -36,7 +36,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     pushFrame(
       { [high]: "pivot" },
       `Pivot at index ${high}`,
-      34
+      32
     );
 
     for (let j = low; j < high; j += 1) {
@@ -44,7 +44,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
       pushFrame(
         { [j]: "comparing", [high]: "pivot" },
         `Comparing index ${j} to pivot`,
-        39
+        49
       );
       if (array[j] < pivot) {
         swaps += 1;
@@ -52,7 +52,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
         pushFrame(
           { [i]: "swapping", [j]: "swapping" },
           `Swapped indices ${i} and ${j}`,
-          44
+          51
         );
         i += 1;
       }
@@ -63,12 +63,12 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     pushFrame(
       { [i]: "swapping", [high]: "swapping" },
       `Moved pivot to index ${i}`,
-        52
+        62
     );
     pushFrame(
       { [i]: "sorted" },
       `Pivot fixed at index ${i}`,
-        53
+        63
     );
 
     return i;
@@ -84,7 +84,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     sort(pivotIndex + 1, high);
   };
 
-  pushFrame({}, "Starting array", 72);
+  pushFrame({}, "Starting array", 88);
   sort(0, array.length - 1);
 
   // Guarantee final frame has perfectly sorted array
@@ -95,7 +95,7 @@ export function recordQuickSort(input: number[]): FrameWithLine[] {
     comparisons,
     swaps,
     message: "Array sorted",
-    activeLine: 75
+    activeLine: 91
   };
   frames.push(finalFrame);
 
