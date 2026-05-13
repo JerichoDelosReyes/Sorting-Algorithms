@@ -15,6 +15,9 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   const [enabled, setEnabledState] = useState(false);
 
   const setEnabled = useCallback((value: boolean) => {
+    if (value) {
+      soundEngine.init();
+    }
     setEnabledState(value);
     soundEngine.setEnabled(value);
   }, []);
@@ -22,6 +25,9 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   const toggle = useCallback(() => {
     setEnabledState((prev) => {
       const next = !prev;
+      if (next) {
+        soundEngine.init();
+      }
       soundEngine.setEnabled(next);
       return next;
     });
