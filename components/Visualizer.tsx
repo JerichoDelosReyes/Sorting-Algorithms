@@ -164,15 +164,15 @@ export default function Visualizer({
       >
         <canvas ref={canvasRef} className="h-full w-full" />
       </div>
-      <p className="mt-3 text-xs text-[var(--color-text-secondary)] sm:text-sm">
-        {message}
-      </p>
-      <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#E5E5EA]">
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E5E5EA]">
         <div
           className="h-full rounded-full bg-[var(--color-accent)]"
           style={{ width: `${progress * 100}%` }}
         />
       </div>
+      <p className="mt-3 text-xs text-[var(--color-text-secondary)] sm:text-sm text-center">
+        {message}
+      </p>
     </div>
   );
 }

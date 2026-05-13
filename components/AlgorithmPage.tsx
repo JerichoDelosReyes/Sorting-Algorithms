@@ -220,8 +220,9 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
               <button
                 type="button"
                 onClick={handleReset}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50"
+                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50 flex items-center gap-1"
               >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
                 Reset
               </button>
             </div>

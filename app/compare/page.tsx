@@ -245,16 +245,18 @@ export default function ComparePage() {
           <button
             type="button"
             onClick={handleShuffle}
-            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:flex-none sm:text-sm"
+            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:flex-none sm:text-sm flex items-center justify-center gap-1"
             disabled={isPlaying}
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
             Shuffle
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:flex-none sm:text-sm"
+            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:flex-none sm:text-sm flex items-center justify-center gap-1"
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
             Reset
           </button>
         </div>
