@@ -14,13 +14,13 @@ export default function AlgoCard({ info }: AlgoCardProps) {
       </p>
 
       <div className="mt-4 flex flex-wrap gap-2 text-xs">
-        <span className="rounded-full bg-white px-3 py-1 text-[var(--color-text-primary)]">
+        <span className="rounded-full bg-[var(--color-surface-elevated)] px-3 py-1 text-[var(--color-text-primary)]">
           Best {info.complexity.best}
         </span>
-        <span className="rounded-full bg-white px-3 py-1 text-[var(--color-text-primary)]">
+        <span className="rounded-full bg-[var(--color-surface-elevated)] px-3 py-1 text-[var(--color-text-primary)]">
           Worst {info.complexity.worst}
         </span>
-        <span className="rounded-full bg-white px-3 py-1 text-[var(--color-text-primary)]">
+        <span className="rounded-full bg-[var(--color-surface-elevated)] px-3 py-1 text-[var(--color-text-primary)]">
           Space {info.complexity.space}
         </span>
       </div>
@@ -37,7 +37,7 @@ export default function AlgoCard({ info }: AlgoCardProps) {
         >
           {info.id === "quick" ? "In-place" : (info.stable ? "Stable" : "Not Stable")}
         </span>
-        <span className="rounded-full border border-[var(--color-border)] bg-white px-3 py-1 font-semibold text-[var(--color-text-primary)]">
+        <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-1 font-semibold text-[var(--color-text-primary)]">
           {info.complexity.worst}
         </span>
       </div>

@@ -53,14 +53,14 @@ export default function Controls({
   const speedLabel = SPEED_VALUES[Math.max(0, speed - 1)] ?? SPEED_VALUES[0];
 
   return (
-    <div className="mt-6 rounded-[18px] border border-[var(--color-border)] bg-white/75 p-4 shadow-sm backdrop-blur">
+    <div className="mt-6 rounded-[18px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm backdrop-blur">
       <div className="flex flex-col gap-4">
         {showShuffleReset && (
           <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
             <button
               type="button"
               onClick={onShuffle}
-              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:px-5"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)] disabled:opacity-50 sm:px-5"
               disabled={isPlaying}
             >
               <RefreshIcon />
@@ -70,7 +70,7 @@ export default function Controls({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface)] sm:px-5"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)] sm:px-5"
             >
               Reset Space
             </button>
@@ -78,7 +78,7 @@ export default function Controls({
         )}
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-3">
+          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-3">
             <span className="text-sm font-medium text-[var(--color-text-secondary)]">Size</span>
             <input
               type="range"
@@ -91,7 +91,7 @@ export default function Controls({
             <span className="w-8 text-right text-sm font-mono text-[var(--color-text-primary)]">{arraySize}</span>
           </div>
 
-          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-4 py-3">
+          <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-3">
             <span className="text-sm font-medium text-[var(--color-text-secondary)]">Speed</span>
             <input
               type="range"

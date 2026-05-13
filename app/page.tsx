@@ -67,6 +67,30 @@ export default function HomePage() {
           background-size: 200% 200%;
           animation: wave 8s ease-in-out infinite;
         }
+
+        html[data-theme='dark'] .hero-animated {
+          background: linear-gradient(
+            45deg,
+            rgba(10, 132, 255, 0.18) 0%,
+            rgba(125, 92, 255, 0.12) 25%,
+            rgba(10, 132, 255, 0.1) 50%,
+            rgba(125, 92, 255, 0.18) 75%,
+            rgba(10, 132, 255, 0.18) 100%
+          );
+          background-size: 200% 200%;
+        }
+
+        html[data-theme='light'] .hero-animated {
+          background: linear-gradient(
+            45deg,
+            #f0fdf4 0%,
+            #dbeafe 25%,
+            #f0fdf4 50%,
+            #dbeafe 75%,
+            #f0fdf4 100%
+          );
+          background-size: 200% 200%;
+        }
         
         @keyframes waveAnimation {
           0% {
@@ -114,7 +138,7 @@ export default function HomePage() {
               </button>
               <Link
                 href="/compare"
-                className="rounded-full border border-[var(--color-border)] bg-white/80 px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-white"
+                className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)]"
               >
                 Compare All
               </Link>
@@ -124,7 +148,7 @@ export default function HomePage() {
 
         {/* What is a Sorting Algorithm Section */}
         <section className="mt-16 md:mt-24">
-          <div className="rounded-[20px] border border-[var(--color-border)] bg-white px-8 py-12 shadow-card md:px-12 md:py-16">
+          <div className="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-12 shadow-card md:px-12 md:py-16">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
                 <h2 className="text-3xl font-bold md:text-4xl">What is a Sorting Algorithm?</h2>
@@ -138,7 +162,7 @@ export default function HomePage() {
                   <strong>Space Complexity</strong> measures how much additional memory an algorithm uses relative to the input size. O(1) space means the algorithm uses a fixed amount of extra memory regardless of input size, making it memory-efficient. When choosing an algorithm, we typically focus on worst-case and average-case performance to ensure the algorithm scales well with large datasets.
                 </p>
               </div>
-              <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-white p-6">
+              <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-[var(--color-surface-soft)] p-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div
                     key={i}
@@ -172,10 +196,10 @@ export default function HomePage() {
               variants={itemVariants}
               className="lg:col-span-3"
             >
-              <div className="flex flex-col items-center justify-between gap-6 rounded-[20px] border border-[var(--color-border)] bg-[#1D1D1F] px-8 py-8 text-center text-white shadow-card md:flex-row md:text-left">
+              <div className="flex flex-col items-center justify-between gap-6 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-8 text-center shadow-card md:flex-row md:text-left">
                 <div>
                   <h3 className="text-xl font-semibold">Compare All Three</h3>
-                  <p className="mt-2 text-sm text-white/70">
+                  <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                     Run all three algorithms on the same array simultaneously and see which one wins in terms of comparisons, swaps, and total time.
                   </p>
                 </div>

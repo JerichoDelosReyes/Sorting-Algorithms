@@ -166,7 +166,7 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
                 type="button"
                 onClick={handleStepBack}
                 disabled={currentFrame <= 0 || isPlaying}
-                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
               </button>
@@ -185,7 +185,7 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
                 type="button"
                 onClick={handleStepForward}
                 disabled={currentFrame >= frames.length - 1 || isPlaying}
-                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
               </button>
@@ -212,19 +212,21 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
       </header>
 
       <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-[5fr_3fr] xl:grid-cols-[2fr_1fr] lg:items-stretch">
-        <div className="flex min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card backdrop-blur lg:h-[36rem] overflow-hidden">
-          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 bg-white/60 flex-shrink-0">
+        <div className="flex min-w-0 flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card backdrop-blur lg:h-[36rem]">
+          <div className="flex flex-shrink-0 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-3">
             <div className="flex gap-2">
               <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
               <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
               <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
             </div>
-            <div className="text-xs font-medium text-[var(--color-text-secondary)] font-mono">Visualizer.canvas</div>
+            <div className="flex flex-1 justify-center px-3 text-center text-xs font-mono font-medium text-[var(--color-text-secondary)]">
+              <span className="truncate">Visualizer.canvas</span>
+            </div>
             <div className="flex flex-wrap justify-center gap-2 sm:flex-nowrap sm:justify-end">
               <button
                 type="button"
                 onClick={handleShuffle}
-                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-white/50 px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-black/5 sm:px-3"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)] sm:px-3"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:mr-1" style={{ display: 'inline' }}><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
                 <span className="hidden sm:inline">Shuffle</span>
@@ -232,7 +234,7 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-white/50 px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-black/5 gap-1 sm:px-3"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)] gap-1 sm:px-3"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
                 <span className="hidden sm:inline">Reset</span>
@@ -276,7 +278,7 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
       <footer className="mt-12 flex flex-col gap-3 border-t border-[var(--color-border)] pt-8 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
-          className="rounded-full border border-[var(--color-border)] bg-white/80 px-6 py-3 text-sm font-semibold hover:bg-white transition-colors text-center"
+          className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-6 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors text-center hover:bg-[var(--color-hover)]"
         >
           Back to Home
         </Link>

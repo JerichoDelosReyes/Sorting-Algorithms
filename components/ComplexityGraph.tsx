@@ -138,9 +138,9 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
   ];
 
   return (
-    <div className="flex min-h-[24rem] flex-col rounded-[20px] border border-[var(--color-border)] bg-white/80 p-6 shadow-card backdrop-blur sm:min-h-[26rem] lg:min-h-[28rem]">
+    <div className="flex min-h-[24rem] flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur sm:min-h-[26rem] lg:min-h-[28rem]">
       <h3 className="mb-4 text-lg font-semibold">Time Complexity Comparison</h3>
-      <div ref={wrapperRef} className="min-h-0 flex-1 rounded-[12px] bg-white/30 p-2 sm:p-3">
+      <div ref={wrapperRef} className="min-h-0 flex-1 rounded-[12px] bg-[var(--color-surface-soft)] p-2 sm:p-3">
         <svg
           viewBox={`0 0 ${chart.width} ${chart.height}`}
           preserveAspectRatio="xMidYMid meet"
@@ -186,7 +186,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
             y1={chart.height - chart.bottom}
             x2={chart.width - chart.right}
             y2={chart.height - chart.bottom}
-            stroke="#1D1D1F"
+            stroke="var(--color-chart-axis)"
             strokeWidth="2"
           />
           <line
@@ -194,7 +194,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
             y1={chart.top}
             x2={chart.left}
             y2={chart.height - chart.bottom}
-            stroke="#1D1D1F"
+            stroke="var(--color-chart-axis)"
             strokeWidth="2"
           />
 
@@ -223,7 +223,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
             const x = scaleX(n);
             return (
               <g key={`tick-x-${i}`}>
-                <line x1={x} y1={chart.height - chart.bottom} x2={x} y2={chart.height - chart.bottom + 5} stroke="#1D1D1F" />
+                <line x1={x} y1={chart.height - chart.bottom} x2={x} y2={chart.height - chart.bottom + 5} stroke="var(--color-chart-axis)" />
                 <text x={x} y={chart.height - chart.bottom + 20} textAnchor="middle" className="text-xs fill-[var(--color-text-secondary)]">
                   {Math.round(n)}
                 </text>
@@ -237,7 +237,7 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
             const y = scaleY(value);
             return (
               <g key={`tick-y-${i}`}>
-                <line x1={chart.left - 5} y1={y} x2={chart.left} y2={y} stroke="#1D1D1F" />
+                <line x1={chart.left - 5} y1={y} x2={chart.left} y2={y} stroke="var(--color-chart-axis)" />
                 <text x={chart.left - 10} y={y + 3} textAnchor="end" className="text-xs fill-[var(--color-text-secondary)]">
                   {formatNumber(value)}
                 </text>

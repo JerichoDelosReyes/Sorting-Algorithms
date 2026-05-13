@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -169,7 +168,7 @@ export default function ComparePage() {
                 type="button"
                 onClick={handleStepBack}
                 disabled={globalFrame <= 0 || isPlaying}
-                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
               </button>
@@ -188,7 +187,7 @@ export default function ComparePage() {
                 type="button"
                 onClick={handleStepForward}
                 disabled={globalFrame >= maxFrames - 1 || isPlaying}
-                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
               </button>
@@ -203,7 +202,7 @@ export default function ComparePage() {
 
       <div className="mt-4 grid gap-3 sm:mt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <div className="grid min-w-0 gap-3 sm:grid-cols-2">
-          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm">
+          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2 text-xs sm:text-sm">
             <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
             <input
               type="range"
@@ -218,7 +217,7 @@ export default function ComparePage() {
             </span>
           </div>
 
-          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm">
+          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2 text-xs sm:text-sm">
             <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
             <input
               type="range"
@@ -236,7 +235,7 @@ export default function ComparePage() {
           <button
             type="button"
             onClick={handleShuffle}
-            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:text-sm"
+            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2 text-xs transition-colors hover:bg-[var(--color-hover)] disabled:opacity-50 sm:text-sm"
             disabled={isPlaying}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
@@ -245,7 +244,7 @@ export default function ComparePage() {
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:text-sm"
+            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-2 text-xs transition-colors hover:bg-[var(--color-hover)] sm:text-sm"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
             Reset
@@ -296,27 +295,27 @@ export default function ComparePage() {
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                <div className="flex flex-col items-center rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-5 text-center shadow-sm">
                   <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Fewest Comparisons
                   </div>
-                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[var(--color-success-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-success-text)]">
                     {formatWinners(winners.comparisons)}
                   </span>
                 </div>
-                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                <div className="flex flex-col items-center rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-5 text-center shadow-sm">
                   <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Fewest Swaps
                   </div>
-                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[var(--color-success-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-success-text)]">
                     {formatWinners(winners.swaps)}
                   </span>
                 </div>
-                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                <div className="flex flex-col items-center rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-5 text-center shadow-sm">
                   <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Finished First
                   </div>
-                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
+                  <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[var(--color-success-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-success-text)]">
                     {formatWinners(winners.speed)}
                   </span>
                 </div>

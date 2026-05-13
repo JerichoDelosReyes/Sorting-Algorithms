@@ -43,7 +43,7 @@ export default function CompareVisualizer({ items }: CompareVisualizerProps) {
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div className="rounded-[12px] bg-white/80 px-3 py-2">
+            <div className="rounded-[12px] bg-[var(--color-surface-soft)] px-3 py-2">
               <div className="text-xs text-[var(--color-text-secondary)]">
                 Comparisons
               </div>
@@ -51,7 +51,7 @@ export default function CompareVisualizer({ items }: CompareVisualizerProps) {
                 {item.comparisons}
               </div>
             </div>
-            <div className="rounded-[12px] bg-white/80 px-3 py-2">
+            <div className="rounded-[12px] bg-[var(--color-surface-soft)] px-3 py-2">
               <div className="text-xs text-[var(--color-text-secondary)]">Swaps</div>
               <div className="text-base font-semibold text-[var(--color-text-primary)]">
                 {item.swaps}
