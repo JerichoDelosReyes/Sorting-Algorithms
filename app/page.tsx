@@ -43,39 +43,51 @@ export default function HomePage() {
   return (
     <div className="flex w-full flex-col">
       <style>{`
-        @keyframes breathe {
+        @keyframes wave {
           0% {
-            background: radial-gradient(circle at 50% 50%, #faf7f1 0%, #f3ede4 65%);
+            background-position: 0% 50%;
           }
           50% {
-            background: radial-gradient(circle at 50% 50%, #f6f2eb 0%, #eef7ef 65%);
+            background-position: 100% 50%;
           }
           100% {
-            background: radial-gradient(circle at 50% 50%, #faf7f1 0%, #f3ede4 65%);
+            background-position: 0% 50%;
           }
         }
         
         .hero-animated {
-          animation: breathe 8s ease-in-out infinite;
+          background: linear-gradient(
+            45deg,
+            #f0fdf4 0%,
+            #dbeafe 25%,
+            #f0fdf4 50%,
+            #dbeafe 75%,
+            #f0fdf4 100%
+          );
+          background-size: 200% 200%;
+          animation: wave 8s ease-in-out infinite;
         }
         
-        @keyframes barSort {
-          0%, 10% {
-            height: 60%;
-            transform: translateX(0);
+        @keyframes waveAnimation {
+          0% {
+            height: 30%;
+          }
+          25% {
+            height: 50%;
           }
           50% {
-            height: 30%;
-            transform: translateX(8px);
+            height: 75%;
+          }
+          75% {
+            height: 50%;
           }
           100% {
-            height: 100%;
-            transform: translateX(0);
+            height: 30%;
           }
         }
         
         .bar-animate {
-          animation: barSort 3s ease-in-out infinite;
+          animation: waveAnimation 2s ease-in-out infinite;
         }
       `}</style>
 
@@ -119,6 +131,12 @@ export default function HomePage() {
                 <p className="mt-6 text-[var(--color-text-secondary)]">
                   A sorting algorithm is a set of instructions for arranging data in a chosen order, usually ascending or descending. It is a core technique in computer science that helps software organize and process information efficiently.
                 </p>
+                <p className="mt-4 text-[var(--color-text-secondary)]">
+                  <strong>Time Complexity</strong> describes how the number of operations grows as the input size increases, expressed in Big O notation. Best case is the optimal scenario, average case represents typical behavior, and worst case shows the slowest possible execution.
+                </p>
+                <p className="mt-8 text-[var(--color-text-secondary)]">
+                  <strong>Space Complexity</strong> measures how much additional memory an algorithm uses relative to the input size. O(1) space means the algorithm uses a fixed amount of extra memory regardless of input size, making it memory-efficient. When choosing an algorithm, we typically focus on worst-case and average-case performance to ensure the algorithm scales well with large datasets.
+                </p>
               </div>
               <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-white p-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -132,55 +150,6 @@ export default function HomePage() {
                   />
                 ))}
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Time and Space Complexity Section */}
-        <section className="mt-16 md:mt-24">
-          <h2 className="mb-8 text-3xl font-bold md:text-4xl">Understanding Complexity</h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-[20px] border border-[var(--color-border)] bg-white/80 px-8 py-10 shadow-card backdrop-blur">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#E5F0FF]">
-                <svg
-                  className="h-6 w-6 text-[#0A84FF]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold">Time Complexity</h3>
-              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Time complexity describes how the number of operations grows as the input size increases, expressed in Big O notation. <strong>Best case</strong> is the optimal scenario, <strong>average case</strong> represents typical behavior, and <strong>worst case</strong> shows the slowest possible execution. When choosing an algorithm, we typically focus on worst-case and average-case performance to ensure the algorithm scales well with large datasets.
-              </p>
-            </div>
-            <div className="rounded-[20px] border border-[var(--color-border)] bg-white/80 px-8 py-10 shadow-card backdrop-blur">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF4D6]">
-                <svg
-                  className="h-6 w-6 text-[#BF5AF2]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 9a2 2 0 110-4 2 2 0 010 4zm0 0a7 7 0 1114 0 7 7 0 01-14 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold">Space Complexity</h3>
-              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Space complexity measures how much additional memory an algorithm uses relative to the input size. <strong>O(1) space</strong> means the algorithm uses a fixed amount of extra memory regardless of input size, making it memory-efficient. <strong>O(n) space</strong> means the algorithm needs extra memory proportional to the input, which can be costly for large datasets. Trading space for speed is a common optimization strategy in algorithm design.
-              </p>
             </div>
           </div>
         </section>
