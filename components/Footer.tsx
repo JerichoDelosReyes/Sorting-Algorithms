@@ -9,8 +9,17 @@ export default function Footer() {
             Sort
           </Link>
         </div>
-        <div className="text-center text-xs text-[var(--color-text-secondary)]">
-          COSC 90 Final Project | Cavite State University Imus Campus
+        <div className="text-center md:text-right text-xs text-[var(--color-text-secondary)]">
+          <div>COSC 90 Final Project | Cavite State University Imus Campus</div>
+          <div className="mt-2 text-[0.75rem] tracking-wide">
+            <div className="flex flex-col items-center gap-1 md:flex-row md:gap-3 md:justify-end">
+              <span>JUSTINE LAWRENCE B. CORONEL</span>
+              <span className="hidden md:inline">|</span>
+              <span>JERICHO G. DELOS REYES</span>
+              <span className="hidden md:inline">|</span>
+              <span>JAZZ THINE MARK K. LEE</span>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
