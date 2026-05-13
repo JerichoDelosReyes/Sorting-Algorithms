@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -19,28 +20,19 @@ const ALGORITHMS: Algorithm[] = ["bubble", "merge", "quick"];
 export default function ComparePage() {
   const { enabled } = useSound();
   const [arraySize, setArraySize] = useState(40);
-  const [baseArray, setBaseArray] = useState<number[]>(() =>
-    generateRandomArray(40)
-  );
+  const [baseArray, setBaseArray] = useState<number[]>(() => generateRandomArray(40));
   const [globalFrame, setGlobalFrame] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
   const [isCompletionDismissed, setIsCompletionDismissed] = useState(false);
 
-  const frames = useMemo<Record<Algorithm, FrameWithLine[]>>(() => {
-    return {
-      bubble: recordBubbleSort(baseArray),
-      merge: recordMergeSort(baseArray),
-      quick: recordQuickSort(baseArray)
-    };
-  }, [baseArray]);
+  const frames = useMemo<Record<Algorithm, FrameWithLine[]>>(() => ({
+    bubble: recordBubbleSort(baseArray),
+    merge: recordMergeSort(baseArray),
+    quick: recordQuickSort(baseArray)
+  }), [baseArray]);
 
-  const maxFrames = Math.max(
-    frames.bubble.length,
-    frames.merge.length,
-    frames.quick.length,
-    1
-  );
+  const maxFrames = Math.max(frames.bubble.length, frames.merge.length, frames.quick.length, 1);
 
   useEffect(() => {
     setGlobalFrame(0);
@@ -123,7 +115,7 @@ export default function ComparePage() {
         frameIndex,
         comparisons: frame?.comparisons ?? 0,
         swaps: frame?.swaps ?? 0,
-        totalFrames: framesForAlgo.length
+        totalFrames: framesForAlgo.length,
       };
     });
   }, [frames, globalFrame]);
@@ -159,33 +151,32 @@ export default function ComparePage() {
     };
   }, [frames]);
 
-  const formatWinners = (ids: Algorithm[]) =>
-    ids.map((id) => ALGO_INFO[id].name).join(" & ");
+  const formatWinners = (ids: Algorithm[]) => ids.map((id) => ALGO_INFO[id].name).join(" & ");
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6">
       <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
-        <div className="flex items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
             <h1 className="text-2xl font-semibold sm:text-3xl">Algorithm Comparison</h1>
             <p className="mt-2 text-xs text-[var(--color-text-secondary)] sm:text-sm">
               All three algorithms run simultaneously on the same array.
             </p>
           </div>
-          <div className="flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 gap-4 shadow-card backdrop-blur flex-shrink-0">
-            <div className="flex items-center gap-1">
+          <div className="flex w-full flex-col gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-card backdrop-blur sm:w-auto sm:flex-row sm:items-center sm:justify-center sm:gap-4 flex-shrink-0">
+            <div className="flex items-center justify-center gap-1">
               <button
                 type="button"
                 onClick={handleStepBack}
                 disabled={globalFrame <= 0 || isPlaying}
-                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
               </button>
               <button
                 type="button"
                 onClick={handlePlayToggle}
-                className="rounded-full bg-[#0a84ff] px-3 py-2 text-white transition-transform hover:scale-105"
+                className="min-h-11 rounded-full bg-[#0a84ff] px-4 py-2 text-white transition-transform hover:scale-105"
               >
                 {isPlaying ? (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
@@ -197,22 +188,22 @@ export default function ComparePage() {
                 type="button"
                 onClick={handleStepForward}
                 disabled={globalFrame >= maxFrames - 1 || isPlaying}
-                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
               </button>
             </div>
-            <div className="w-px h-6 bg-[var(--color-border)]"></div>
-            <div className="text-xs font-mono text-[var(--color-text-secondary)] pr-2">
+            <div className="h-px w-full bg-[var(--color-border)] sm:hidden"></div>
+            <div className="text-center text-xs font-mono text-[var(--color-text-secondary)] sm:border-l sm:border-[var(--color-border)] sm:pl-4 sm:text-left sm:pr-2">
               Frame {globalFrame + 1} of {maxFrames}
             </div>
           </div>
         </div>
       </header>
 
-      <div className="mt-4 grid gap-3 sm:mt-6 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
-        <div className="flex w-full gap-3 sm:w-auto sm:items-center sm:flex-wrap">
-          <div className="flex flex-1 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:flex-none sm:text-sm">
+      <div className="mt-4 grid gap-3 sm:mt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm">
             <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Speed</span>
             <input
               type="range"
@@ -227,7 +218,7 @@ export default function ComparePage() {
             </span>
           </div>
 
-          <div className="flex flex-1 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:flex-none sm:text-sm">
+          <div className="flex min-w-0 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm">
             <span className="whitespace-nowrap text-[var(--color-text-secondary)]">Size</span>
             <input
               type="range"
@@ -241,11 +232,11 @@ export default function ComparePage() {
           </div>
         </div>
 
-        <div className="flex w-full gap-3 sm:w-auto sm:flex-wrap">
+        <div className="grid w-full grid-cols-2 gap-3 lg:w-auto lg:grid-cols-2 lg:justify-self-end">
           <button
             type="button"
             onClick={handleShuffle}
-            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:flex-none sm:text-sm flex items-center justify-center gap-1"
+            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:text-sm"
             disabled={isPlaying}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
@@ -254,7 +245,7 @@ export default function ComparePage() {
           <button
             type="button"
             onClick={handleReset}
-            className="flex-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:flex-none sm:text-sm flex items-center justify-center gap-1"
+            className="inline-flex min-h-11 items-center justify-center gap-1 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:text-sm"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
             Reset
@@ -278,20 +269,20 @@ export default function ComparePage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ duration: 0.3, type: "spring" }}
-              className="relative w-full max-w-2xl overflow-hidden rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-6 sm:p-8"
+              className="relative w-full max-w-2xl overflow-hidden rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-2xl sm:p-8"
             >
               <button
                 type="button"
                 onClick={handleDismissCompletion}
-                className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-border)] hover:text-[var(--color-text-primary)] transition-colors"
+                className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text-primary)]"
                 aria-label="Close"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 6L6 18M6 6l12 12"/>
+                  <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
               </button>
-              
-              <div className="flex flex-col items-center mb-6 text-center">
+
+              <div className="mb-6 flex flex-col items-center text-center">
                 <div className="mb-4 rounded-full bg-[#E5F0FF] p-3 text-[#0A84FF]">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -305,24 +296,24 @@ export default function ComparePage() {
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
-                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                  <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Fewest Comparisons
                   </div>
                   <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
                     {formatWinners(winners.comparisons)}
                   </span>
                 </div>
-                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
-                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                  <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Fewest Swaps
                   </div>
                   <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
                     {formatWinners(winners.swaps)}
                   </span>
                 </div>
-                <div className="flex flex-col items-center rounded-[16px] bg-white/80 px-4 py-5 shadow-sm text-center border border-black/5">
-                  <div className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+                <div className="flex flex-col items-center rounded-[16px] border border-black/5 bg-white/80 px-4 py-5 text-center shadow-sm">
+                  <div className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
                     Finished First
                   </div>
                   <span className="mt-3 inline-flex items-center justify-center rounded-full bg-[#E6F6EA] px-4 py-1.5 text-sm font-bold text-[#1F7A3D]">
@@ -330,12 +321,12 @@ export default function ComparePage() {
                   </span>
                 </div>
               </div>
-              
+
               <div className="mt-8 flex justify-center">
                 <button
                   type="button"
                   onClick={handleShuffle}
-                  className="rounded-full bg-[#0A84FF] px-8 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
+                  className="rounded-full bg-[#0A84FF] px-8 py-3 text-sm font-semibold text-white shadow-md transition-all hover:shadow-lg"
                 >
                   Shuffle & Try Again
                 </button>

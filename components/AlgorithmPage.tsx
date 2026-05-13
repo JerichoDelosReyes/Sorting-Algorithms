@@ -128,7 +128,6 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
 
   const headerBadges = useMemo(() => {
     return [
-      { label: "Worst", value: info.complexity.worst },
       { label: "Space", value: info.complexity.space },
       { label: info.stable ? "Stable" : "Not Stable", value: true }
     ];
@@ -137,7 +136,6 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
   const activeFrame = frames[Math.min(currentFrame, frames.length - 1)];
 
   const badgeStyles: Record<string, string> = {
-    Worst: "rounded-full border border-[#d94b4b]/20 bg-[#d94b4b]/12 px-4 py-1.5 text-xs font-semibold text-[#d94b4b]",
     Space: "rounded-full border border-[#d4a017]/25 bg-[#d4a017]/16 px-4 py-1.5 text-xs font-semibold text-[#d4a017]",
     Stable: "rounded-full border border-[#2f8f5b]/20 bg-[#2f8f5b]/12 px-4 py-1.5 text-xs font-semibold text-[#2f8f5b]",
     "Not Stable": "rounded-full border border-[#8a8f98]/20 bg-[#8a8f98]/12 px-4 py-1.5 text-xs font-semibold text-[#8a8f98]"
@@ -146,22 +144,36 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
       <header className="border-b border-[var(--color-border)] pb-4 sm:pb-6">
-        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:items-center">
-          <h1 className="text-2xl font-semibold sm:text-4xl font-sans">{info.name}</h1>
-          <div className="flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 gap-4 shadow-card backdrop-blur">
-            <div className="flex items-center gap-1">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 lg:items-center">
+          <div className="flex min-w-0 items-start justify-between gap-3 sm:block">
+            <h1 className="min-w-0 text-2xl font-semibold font-sans sm:text-4xl">{info.name}</h1>
+            <div className="flex shrink-0 items-center gap-2 sm:hidden">
+              {headerBadges.map((badge) => (
+                <span
+                  key={badge.label}
+                  className={badgeStyles[badge.label] ?? badgeStyles["Not Stable"]}
+                >
+                  {badge.label === "Stable" || badge.label === "Not Stable"
+                    ? badge.label
+                    : `${badge.label}: ${badge.value}`}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-card backdrop-blur sm:w-auto sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex items-center justify-center gap-1">
               <button
                 type="button"
                 onClick={handleStepBack}
                 disabled={currentFrame <= 0 || isPlaying}
-                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
               </button>
               <button
                 type="button"
                 onClick={handlePlayToggle}
-                className="rounded-full bg-[#0a84ff] px-3 py-2 text-white transition-transform hover:scale-105"
+                className="min-h-11 rounded-full bg-[#0a84ff] px-4 py-2 text-white transition-transform hover:scale-105"
               >
                 {isPlaying ? (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
@@ -173,19 +185,19 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
                 type="button"
                 onClick={handleStepForward}
                 disabled={currentFrame >= frames.length - 1 || isPlaying}
-                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-black/5 hover:text-[var(--color-text-primary)] transition-colors disabled:opacity-50"
+                className="min-h-11 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-black/5 hover:text-[var(--color-text-primary)] disabled:opacity-50"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
               </button>
             </div>
-            <div className="w-px h-6 bg-[var(--color-border)]"></div>
-            <div className="text-xs font-mono text-[var(--color-text-secondary)] pr-2">
+            <div className="h-px w-full bg-[var(--color-border)] sm:hidden"></div>
+            <div className="text-center text-xs font-mono text-[var(--color-text-secondary)] sm:border-l sm:border-[var(--color-border)] sm:pl-4 sm:text-left sm:pr-2">
               Frame {Math.min(currentFrame + 1, frames.length)} of {frames.length}
             </div>
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
+        <div className="mt-3 hidden flex-wrap gap-2 sm:mt-4 sm:flex">
           {headerBadges.map((badge) => (
             <span
               key={badge.label}
@@ -208,22 +220,22 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
               <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
             </div>
             <div className="text-xs font-medium text-[var(--color-text-secondary)] font-mono">Visualizer.canvas</div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center gap-2 sm:flex-nowrap sm:justify-end">
               <button
                 type="button"
                 onClick={handleShuffle}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-white/50 px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-black/5 sm:px-3"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1" style={{ display: 'inline' }}><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
-                Shuffle
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:mr-1" style={{ display: 'inline' }}><polyline points="23 18 13 8 23 8"></polyline><polyline points="1 6 11 16 1 16"></polyline></svg>
+                <span className="hidden sm:inline">Shuffle</span>
               </button>
               <button
                 type="button"
                 onClick={handleReset}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-black/5 transition-colors text-[var(--color-text-primary)] border border-[var(--color-border)] bg-white/50 flex items-center gap-1"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-border)] bg-white/50 px-2 py-2 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-black/5 gap-1 sm:px-3"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-                Reset
+                <span className="hidden sm:inline">Reset</span>
               </button>
             </div>
           </div>

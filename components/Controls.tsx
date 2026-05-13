@@ -56,11 +56,11 @@ export default function Controls({
     <div className="mt-6 rounded-[18px] border border-[var(--color-border)] bg-white/75 p-4 shadow-sm backdrop-blur">
       <div className="flex flex-col gap-4">
         {showShuffleReset && (
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
             <button
               type="button"
               onClick={onShuffle}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50 sm:flex-none sm:px-5"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:px-5"
               disabled={isPlaying}
             >
               <RefreshIcon />
@@ -70,7 +70,7 @@ export default function Controls({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex flex-1 items-center justify-center rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-colors sm:flex-none sm:px-5"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[var(--color-border)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface)] sm:px-5"
             >
               Reset Space
             </button>
