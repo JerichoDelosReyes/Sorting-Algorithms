@@ -153,12 +153,10 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
                 badge.label === "Worst"
                   ? "bg-[#FFE5E5] text-[#C91C1C]"
                   : badge.label === "Space"
-                    ? "bg-[#E5F0FF] text-[#0A84FF]"
-                    : algorithmId === "quick"
-                      ? "bg-[#E5F0FF] text-[#0A84FF]"
-                      : badge.value
-                        ? "bg-[#E6F6EA] text-[#1F7A3D]"
-                        : "bg-[#FFE5E5] text-[#C91C1C]"
+                    ? "bg-[#FFF4CE] text-[#B47804]"
+                    : badge.label === "In-place" || badge.label === "Stable"
+                      ? "bg-[#E6F6EA] text-[#1F7A3D]"
+                      : "bg-[#FFE5E5] text-[#C91C1C]"
               }`}
             >
               {badge.label === "Stable" || badge.label === "Not Stable" || badge.label === "In-place"
@@ -169,37 +167,50 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
         </div>
       </header>
 
-      <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-2 lg:items-start">
-        <div className="flex min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-card backdrop-blur sm:p-6 lg:h-[34rem]">
-          <Visualizer
-            frames={frames}
-            currentFrameIndex={currentFrame}
-            totalFrames={frames.length}
-          />
-          <Controls
-            isPlaying={isPlaying}
-            onPlayToggle={handlePlayToggle}
-            onShuffle={handleShuffle}
-            onStepBack={handleStepBack}
-            onStepForward={handleStepForward}
-            onReset={handleReset}
-            canStepBack={currentFrame > 0}
-            canStepForward={currentFrame < frames.length - 1}
-            arraySize={arraySize}
-            onArraySizeChange={handleSizeChange}
-            speed={speed}
-            onSpeedChange={setSpeed}
-            frameIndex={currentFrame}
-            totalFrames={frames.length}
-          />
+      <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-[5fr_3fr] xl:grid-cols-[2fr_1fr] lg:items-stretch">
+        <div className="flex min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card backdrop-blur lg:h-[36rem] overflow-hidden">
+          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 bg-black/5 flex-shrink-0">
+            <div className="flex gap-2">
+              <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+              <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+              <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
+            </div>
+            <div className="text-xs font-medium text-[var(--color-text-secondary)] font-mono">Visualizer.canvas</div>
+            <div className="w-12"></div> {/* Spacer for centering */}
+          </div>
+          <div className="flex flex-col flex-1 p-4 sm:p-6 pb-6 min-h-0 overflow-y-auto">
+            <Visualizer
+              frames={frames}
+              currentFrameIndex={currentFrame}
+              totalFrames={frames.length}
+            />
+            <div className="mt-auto pt-4 flex-shrink-0">
+              <Controls
+                isPlaying={isPlaying}
+                onPlayToggle={handlePlayToggle}
+                onShuffle={handleShuffle}
+                onStepBack={handleStepBack}
+                onStepForward={handleStepForward}
+                onReset={handleReset}
+                canStepBack={currentFrame > 0}
+                canStepForward={currentFrame < frames.length - 1}
+                arraySize={arraySize}
+                onArraySizeChange={handleSizeChange}
+                speed={speed}
+                onSpeedChange={setSpeed}
+                frameIndex={currentFrame}
+                totalFrames={frames.length}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="flex h-[24rem] min-w-0 w-full sm:h-[26rem] lg:h-[34rem]">
-          <CodePanel code={info.code} activeLine={activeFrame?.activeLine} />
+        <div className="flex h-[24rem] min-w-0 w-full sm:h-[26rem] lg:h-[36rem]">
+          <CodePanel code={info.code} activeLine={activeFrame?.activeLine} fileName={`${info.name.replace(/\s+/g, '')}.ts`} />
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+      <div className="mt-8 flex flex-col gap-6">
         <ComplexityCard algorithmId={algorithmId} />
         <AlgoDescription algorithmId={algorithmId} />
       </div>

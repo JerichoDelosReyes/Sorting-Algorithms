@@ -4,12 +4,12 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { BarColor, FrameWithLine } from "../lib/types";
 
 const COLOR_MAP: Record<BarColor, string> = {
-  default: "#D1D1D6",
-  comparing: "#0A84FF",
-  swapping: "#FF6B35",
-  pivot: "#FF9F0A",
-  merging: "#BF5AF2",
-  sorted: "#30D158"
+  default: "#475569", // Darker gray for inactive bars
+  comparing: "#38BDF8", // Cyan-ish blue for comparing
+  swapping: "#F87171", // Light red
+  pivot: "#FBBF24", // Yellow/Orange
+  merging: "#C084FC",
+  sorted: "#4ADE80"
 };
 
 interface VisualizerProps {
@@ -107,8 +107,31 @@ export default function Visualizer({
       const barHeight = (value / maxValue) * paddedHeight;
       const x = index * (barWidth + gap);
       const y = height - barHeight;
-      const color = COLOR_MAP[frame.highlights[index] ?? "default"];
+      const highlight = frame.highlights[index] ?? "default";
+      const color = COLOR_MAP[highlight];
+
+      if (highlight !== "default" && highlight !== "sorted") {
+        context.shadowColor = color;
+        context.shadowBlur = 15;
+      } else {
+        context.shadowColor = "transparent";
+        context.shadowBlur = 0;
+      }
+
       drawRoundedRect(context, x, y, barWidth, barHeight, 4, color);
+      
+      if (highlight === "pivot") {
+        context.shadowColor = "transparent";
+        context.shadowBlur = 0;
+        context.fillStyle = color;
+        context.font = "bold 10px monospace";
+        context.textAlign = "center";
+        context.fillText("PIVOT", x + barWidth / 2, y - 10);
+      }
+
+      // Reset shadows after drawing for performance / safety
+      context.shadowColor = "transparent";
+      context.shadowBlur = 0;
     });
   }, [frame]);
 

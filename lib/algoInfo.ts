@@ -269,8 +269,8 @@ export const ALGO_INFO: Record<Algorithm, AlgorithmInfo> = {
     name: "Bubble Sort",
     slug: "/bubble-sort",
     complexity: {
-      best: "O(n)",
-      average: "O(n^2)",
+      best: "Ω(n)",
+      average: "Θ(n^2)",
       worst: "O(n^2)",
       space: "O(1)"
     },
@@ -287,8 +287,8 @@ export const ALGO_INFO: Record<Algorithm, AlgorithmInfo> = {
     name: "Merge Sort",
     slug: "/merge-sort",
     complexity: {
-      best: "O(n log n)",
-      average: "O(n log n)",
+      best: "Ω(n log n)",
+      average: "Θ(n log n)",
       worst: "O(n log n)",
       space: "O(n)"
     },
@@ -305,8 +305,8 @@ export const ALGO_INFO: Record<Algorithm, AlgorithmInfo> = {
     name: "Quick Sort",
     slug: "/quick-sort",
     complexity: {
-      best: "O(n log n)",
-      average: "O(n log n)",
+      best: "Ω(n log n)",
+      average: "Θ(n log n)",
       worst: "O(n^2)",
       space: "O(log n)"
     },

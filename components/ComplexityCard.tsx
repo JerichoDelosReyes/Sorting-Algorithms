@@ -5,75 +5,38 @@ interface ComplexityCardProps {
   algorithmId: Algorithm;
 }
 
-function getTimeBadgeClasses(value: string): string {
-  if (value.includes("n^2")) {
-    return "bg-[#FFE5E5] text-[#C91C1C]";
-  }
-  return "bg-[#E6F6EA] text-[#1F7A3D]";
-}
-
-function getSpaceBadgeClasses(): string {
-  return "bg-[#E5F0FF] text-[#0A84FF]";
-}
-
 export default function ComplexityCard({ algorithmId }: ComplexityCardProps) {
   const info = ALGO_INFO[algorithmId];
-  const { complexity, stable } = info;
+  const { complexity } = info;
 
   return (
-    <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
-      <h3 className="text-lg font-semibold">Complexity</h3>
-      <div className="mt-4 grid gap-3 text-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-[var(--color-text-secondary)]">Best Case</span>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${getTimeBadgeClasses(
-              complexity.best
-            )}`}
-          >
+    <div className="flex h-full flex-col lg:flex-row rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 md:p-8 shadow-card backdrop-blur col-span-1 lg:col-span-2 gap-8 items-center">
+      <div className="flex-1">
+        <h3 className="text-xl md:text-2xl font-bold mb-3">Complexity Analysis</h3>
+        <p className="text-[var(--color-text-secondary)] text-sm md:text-base leading-relaxed">
+          {info.shortDescription} The best case is {complexity.best}, average case is {complexity.average}, and worst case is {complexity.worst}. Space complexity requires {complexity.space}. {algorithmId === "quick" ? "It is an In-place algorithm." : (info.stable ? "It is a Stable algorithm." : "It is Not Stable.")}
+        </p>
+      </div>
+
+      <div className="flex w-full lg:w-auto gap-4 md:gap-8 justify-between lg:justify-end items-center mt-6 lg:mt-0">
+        <div className="flex flex-col items-center">
+          <span className="text-[10px] font-bold tracking-widest text-[#0A84FF]/60 uppercase mb-2">Best</span>
+          <span className="text-lg md:text-2xl font-mono text-[#0A84FF] drop-shadow-[0_0_8px_rgba(10,132,255,0.8)] font-bold">
             {complexity.best}
           </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[var(--color-text-secondary)]">Average Case</span>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${getTimeBadgeClasses(
-              complexity.average
-            )}`}
-          >
+
+        <div className="flex flex-col items-center rounded-xl bg-blue-900/20 shadow-[0_0_15px_rgba(10,132,255,0.2)] border border-[#0A84FF]/30 p-3 md:p-4">
+          <span className="text-[10px] font-bold tracking-widest text-[#5AC8FA] uppercase mb-2">Average</span>
+          <span className="text-xl md:text-3xl font-mono text-[#5AC8FA] drop-shadow-[0_0_12px_rgba(90,200,250,1)] font-bold">
             {complexity.average}
           </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[var(--color-text-secondary)]">Worst Case</span>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${getTimeBadgeClasses(
-              complexity.worst
-            )}`}
-          >
+
+        <div className="flex flex-col items-center">
+          <span className="text-[10px] font-bold tracking-widest text-[#FF6B35]/60 uppercase mb-2">Worst</span>
+          <span className="text-lg md:text-2xl font-mono text-[#FF6B35] drop-shadow-[0_0_8px_rgba(255,107,53,0.8)] font-bold">
             {complexity.worst}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[var(--color-text-secondary)]">Space</span>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${getSpaceBadgeClasses()}`}
-          >
-            {complexity.space}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[var(--color-text-secondary)]">Stability</span>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${
-              algorithmId === "quick"
-                ? "bg-[#E5F0FF] text-[#0A84FF]"
-                : stable
-                  ? "bg-[#E6F6EA] text-[#1F7A3D]"
-                  : "bg-[#FFE5E5] text-[#C91C1C]"
-            }`}
-          >
-            {algorithmId === "quick" ? "In-place" : (stable ? "Stable Algorithm" : "Not Stable")}
           </span>
         </div>
       </div>

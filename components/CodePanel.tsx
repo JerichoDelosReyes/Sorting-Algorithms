@@ -12,6 +12,7 @@ interface Token {
 interface CodePanelProps {
   code: string;
   activeLine?: number;
+  fileName?: string;
 }
 
 const KEYWORDS = new Set([
@@ -94,7 +95,7 @@ function tokenizeLine(line: string): Token[] {
   return tokens;
 }
 
-export default function CodePanel({ code, activeLine }: CodePanelProps) {
+export default function CodePanel({ code, activeLine, fileName = "Algorithm.ts" }: CodePanelProps) {
   const [copied, setCopied] = useState(false);
   const linesArray = useMemo(() => code.split("\n"), [code]);
   const activeLineRef = useRef<HTMLDivElement | null>(null);
@@ -135,9 +136,14 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
   };
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 w-full max-h-[34rem] flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 flex-shrink-0">
-        <div className="text-sm font-medium text-white/80">TypeScript</div>
+    <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card backdrop-blur">
+      <div className="flex items-center justify-between border-b border-[#2C2C2E] bg-[#1C1C1E] px-4 py-3 flex-shrink-0">
+        <div className="flex gap-2">
+          <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+          <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+          <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <div className="text-xs font-medium text-white/50 font-mono">{fileName}</div>
         <button
           type="button"
           onClick={handleCopy}
