@@ -98,6 +98,7 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
   const [copied, setCopied] = useState(false);
   const linesArray = useMemo(() => code.split("\n"), [code]);
   const activeLineRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!copied) {
@@ -109,7 +110,7 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
 
   useEffect(() => {
     if (activeLine && activeLineRef.current) {
-      const container = activeLineRef.current.parentElement?.parentElement;
+      const container = scrollContainerRef.current;
       if (container) {
         const offsetTop = activeLineRef.current.offsetTop;
         const containerHeight = container.clientHeight;
@@ -134,7 +135,7 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
   };
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card">
+    <div className="flex h-full min-h-0 min-w-0 w-full max-h-[34rem] flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 flex-shrink-0">
         <div className="text-sm font-medium text-white/80">TypeScript</div>
         <button
@@ -164,8 +165,11 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
           )}
         </button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]">
-        <pre className="m-0 text-xs leading-6 text-white/90 font-mono">
+      <div
+        ref={scrollContainerRef}
+        className="min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]"
+      >
+        <pre className="m-0 w-max min-w-full text-xs leading-6 text-white/90 font-mono">
           {linesArray.map((line, index) => {
             const lineNumber = index + 1;
             const tokens = tokenizeLine(line);
@@ -182,7 +186,7 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
                 }`}
               >
                 <span className="w-8 text-right text-white/40 flex-shrink-0">{lineNumber}</span>
-                <code className="whitespace-pre flex-1">
+                <code className="whitespace-pre flex-1 min-w-max">
                   {tokens.map((token, tokenIndex) => (
                     <span
                       key={`${lineNumber}-${tokenIndex}`}

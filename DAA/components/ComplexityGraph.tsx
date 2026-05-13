@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Algorithm } from "../lib/types";
 
 interface ComplexityGraphProps {
@@ -8,6 +8,29 @@ interface ComplexityGraphProps {
 }
 
 export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphProps) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [wrapperWidth, setWrapperWidth] = useState(0);
+
+  useEffect(() => {
+    if (!wrapperRef.current) {
+      return;
+    }
+
+    const element = wrapperRef.current;
+    const updateSize = () => {
+      setWrapperWidth(element.getBoundingClientRect().width);
+    };
+
+    updateSize();
+
+    const observer = new ResizeObserver(() => updateSize());
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const isMobile = wrapperWidth > 0 && wrapperWidth < 640;
+
   // Calculate values for different complexity classes
   const generatePoints = (maxN: number, complexityFn: (n: number) => number) => {
     const points: Array<[number, number]> = [];
@@ -33,15 +56,36 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
   const maxValue = Math.max(...allValues);
 
   // SVG dimensions
-  const width = 800;
-  const height = 400;
-  const padding = 80;
-  const plotWidth = width - padding * 2;
-  const plotHeight = height - padding * 2;
+  const chart = useMemo(() => {
+    const width = 900;
+    const height = isMobile ? 500 : 420;
+    const left = isMobile ? 54 : 72;
+    const right = isMobile ? 20 : 24;
+    const top = isMobile ? 24 : 36;
+    const bottom = isMobile ? 90 : 74;
+
+    return {
+      width,
+      height,
+      left,
+      right,
+      top,
+      bottom,
+      plotWidth: width - left - right,
+      plotHeight: height - top - bottom
+    };
+  }, [isMobile]);
 
   // Scale functions
-  const scaleX = (n: number) => (n / maxN) * plotWidth + padding;
-  const scaleY = (value: number) => height - padding - (value / maxValue) * plotHeight;
+  const scaleX = (n: number) => (n / maxN) * chart.plotWidth + chart.left;
+  const scaleY = (value: number) => chart.height - chart.bottom - (value / maxValue) * chart.plotHeight;
+
+  const formatNumber = (value: number): string => {
+    if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}k`;
+    }
+    return `${Math.round(value)}`;
+  };
 
   // Generate path string
   const generatePathString = (points: Array<[number, number]>): string => {
@@ -63,24 +107,54 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
   const isMergeHighlighted = highlightAlgorithm === "merge";
   const isQuickHighlighted = highlightAlgorithm === "quick";
 
+  const xTickCount = isMobile ? 5 : 6;
+  const yTickCount = isMobile ? 5 : 6;
+
+  const legendItems = [
+    {
+      label: "Bubble O(n²)",
+      color: "#FF6B35",
+      dashed: false,
+      dimmed: Boolean(highlightAlgorithm && !isBubbleHighlighted)
+    },
+    {
+      label: "Merge O(n log n)",
+      color: "#BF5AF2",
+      dashed: false,
+      dimmed: Boolean(highlightAlgorithm && !isMergeHighlighted)
+    },
+    {
+      label: "Quick Avg O(n log n)",
+      color: "#0A84FF",
+      dashed: false,
+      dimmed: Boolean(highlightAlgorithm && !isQuickHighlighted)
+    },
+    {
+      label: "Quick Worst O(n²)",
+      color: "#FF6B35",
+      dashed: true,
+      dimmed: Boolean(highlightAlgorithm && !isQuickHighlighted)
+    }
+  ];
+
   return (
     <div className="flex min-h-[24rem] flex-col rounded-[20px] border border-[var(--color-border)] bg-white/80 p-6 shadow-card backdrop-blur sm:min-h-[26rem] lg:min-h-[28rem]">
       <h3 className="mb-4 text-lg font-semibold">Time Complexity Comparison</h3>
-      <div className="min-h-0 flex-1 overflow-hidden rounded-[12px] bg-white/30">
+      <div ref={wrapperRef} className="min-h-0 flex-1 rounded-[12px] bg-white/30 p-2 sm:p-3">
         <svg
-          viewBox={`0 0 ${width} ${height}`}
-          preserveAspectRatio="none"
-          className="block h-full w-full"
+          viewBox={`0 0 ${chart.width} ${chart.height}`}
+          preserveAspectRatio="xMidYMid meet"
+          className="block h-auto w-full"
         >
           {/* Grid lines */}
-          {Array.from({ length: 6 }).map((_, i) => {
-            const y = padding + (plotHeight / 5) * i;
+          {Array.from({ length: yTickCount }).map((_, i) => {
+            const y = chart.top + (chart.plotHeight / (yTickCount - 1)) * i;
             return (
               <g key={`grid-h-${i}`}>
                 <line
-                  x1={padding}
+                  x1={chart.left}
                   y1={y}
-                  x2={width - padding}
+                  x2={chart.width - chart.right}
                   y2={y}
                   stroke="#E5E5EA"
                   strokeWidth="1"
@@ -89,15 +163,15 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
               </g>
             );
           })}
-          {Array.from({ length: 6 }).map((_, i) => {
-            const x = padding + (plotWidth / 5) * i;
+          {Array.from({ length: xTickCount }).map((_, i) => {
+            const x = chart.left + (chart.plotWidth / (xTickCount - 1)) * i;
             return (
               <g key={`grid-v-${i}`}>
                 <line
                   x1={x}
-                  y1={padding}
+                  y1={chart.top}
                   x2={x}
-                  y2={height - padding}
+                  y2={chart.height - chart.bottom}
                   stroke="#E5E5EA"
                   strokeWidth="1"
                   strokeDasharray="4,4"
@@ -108,49 +182,49 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
 
           {/* Axes */}
           <line
-            x1={padding}
-            y1={height - padding}
-            x2={width - padding}
-            y2={height - padding}
+            x1={chart.left}
+            y1={chart.height - chart.bottom}
+            x2={chart.width - chart.right}
+            y2={chart.height - chart.bottom}
             stroke="#1D1D1F"
             strokeWidth="2"
           />
           <line
-            x1={padding}
-            y1={padding}
-            x2={padding}
-            y2={height - padding}
+            x1={chart.left}
+            y1={chart.top}
+            x2={chart.left}
+            y2={chart.height - chart.bottom}
             stroke="#1D1D1F"
             strokeWidth="2"
           />
 
           {/* Axis labels */}
           <text
-            x={width / 2}
-            y={height - 20}
+            x={chart.width / 2}
+            y={chart.height - 24}
             textAnchor="middle"
             className="text-xs fill-[var(--color-text-secondary)]"
           >
             n (input size)
           </text>
           <text
-            x={15}
-            y={height / 2}
+            x={20}
+            y={chart.height / 2}
             textAnchor="middle"
-            transform={`rotate(-90 15 ${height / 2})`}
+            transform={`rotate(-90 20 ${chart.height / 2})`}
             className="text-xs fill-[var(--color-text-secondary)]"
           >
             Operations
           </text>
 
           {/* Tick marks and labels on x-axis */}
-          {Array.from({ length: 6 }).map((_, i) => {
-            const n = (maxN / 5) * i;
+          {Array.from({ length: xTickCount }).map((_, i) => {
+            const n = (maxN / (xTickCount - 1)) * i;
             const x = scaleX(n);
             return (
               <g key={`tick-x-${i}`}>
-                <line x1={x} y1={height - padding} x2={x} y2={height - padding + 5} stroke="#1D1D1F" />
-                <text x={x} y={height - padding + 20} textAnchor="middle" className="text-xs fill-[var(--color-text-secondary)]">
+                <line x1={x} y1={chart.height - chart.bottom} x2={x} y2={chart.height - chart.bottom + 5} stroke="#1D1D1F" />
+                <text x={x} y={chart.height - chart.bottom + 20} textAnchor="middle" className="text-xs fill-[var(--color-text-secondary)]">
                   {Math.round(n)}
                 </text>
               </g>
@@ -158,14 +232,14 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
           })}
 
           {/* Tick marks and labels on y-axis */}
-          {Array.from({ length: 6 }).map((_, i) => {
-            const value = (maxValue / 5) * i;
+          {Array.from({ length: yTickCount }).map((_, i) => {
+            const value = (maxValue / (yTickCount - 1)) * i;
             const y = scaleY(value);
             return (
               <g key={`tick-y-${i}`}>
-                <line x1={padding - 5} y1={y} x2={padding} y2={y} stroke="#1D1D1F" />
-                <text x={padding - 10} y={y + 3} textAnchor="end" className="text-xs fill-[var(--color-text-secondary)]">
-                  {Math.round(value)}
+                <line x1={chart.left - 5} y1={y} x2={chart.left} y2={y} stroke="#1D1D1F" />
+                <text x={chart.left - 10} y={y + 3} textAnchor="end" className="text-xs fill-[var(--color-text-secondary)]">
+                  {formatNumber(value)}
                 </text>
               </g>
             );
@@ -211,34 +285,32 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
             opacity={!highlightAlgorithm || isQuickHighlighted ? 1 : 0.4}
             className="transition-all"
           />
-
-          {/* Legend */}
-          <g>
-            {/* Bubble Sort */}
-            <circle cx={width - 200} cy={padding + 20} r="4" fill="#FF6B35" />
-            <text x={width - 185} y={padding + 25} className="text-xs fill-[var(--color-text-primary)]">
-              Bubble O(n²)
-            </text>
-
-            {/* Merge Sort */}
-            <circle cx={width - 200} cy={padding + 50} r="4" fill="#BF5AF2" />
-            <text x={width - 185} y={padding + 55} className="text-xs fill-[var(--color-text-primary)]">
-              Merge O(n log n)
-            </text>
-
-            {/* Quick Sort Average */}
-            <circle cx={width - 200} cy={padding + 80} r="4" fill="#0A84FF" />
-            <text x={width - 185} y={padding + 85} className="text-xs fill-[var(--color-text-primary)]">
-              Quick Avg O(n log n)
-            </text>
-
-            {/* Quick Sort Worst */}
-            <line x1={width - 200} y1={padding + 110} x2={width - 192} y2={padding + 110} stroke="#FF6B35" strokeWidth="2" strokeDasharray="4,2" />
-            <text x={width - 185} y={padding + 115} className="text-xs fill-[var(--color-text-primary)]">
-              Quick Worst O(n²)
-            </text>
-          </g>
         </svg>
+
+        <div className="mt-3 grid grid-cols-1 gap-2 text-xs text-[var(--color-text-primary)] sm:grid-cols-2 lg:grid-cols-4">
+          {legendItems.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-2"
+              style={{ opacity: item.dimmed ? 0.5 : 1 }}
+            >
+              {item.dashed ? (
+                <span
+                  className="h-0 w-4 border-t-2"
+                  style={{ borderColor: item.color, borderStyle: "dashed" }}
+                  aria-hidden="true"
+                />
+              ) : (
+                <span
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                  aria-hidden="true"
+                />
+              )}
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
