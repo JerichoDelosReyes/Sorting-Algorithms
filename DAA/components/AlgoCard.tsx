@@ -7,10 +7,7 @@ interface AlgoCardProps {
 
 export default function AlgoCard({ info }: AlgoCardProps) {
   return (
-    <Link
-      href={info.slug}
-      className="group flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur transition-transform hover:-translate-y-1"
-    >
+    <div className="group flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
       <h3 className="text-xl font-semibold">{info.name}</h3>
       <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
         {info.shortDescription}
@@ -45,11 +42,14 @@ export default function AlgoCard({ info }: AlgoCardProps) {
         </span>
       </div>
 
-      <div className="mt-6">
-        <span className="inline-flex items-center rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-semibold text-white">
+      <div className="mt-auto pt-6">
+        <Link
+          href={info.slug}
+          className="block w-full rounded-full bg-[var(--color-accent)] px-4 py-3 text-center text-sm font-semibold text-white transition-shadow hover:shadow-lg"
+        >
           Explore Algorithm
-        </span>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }

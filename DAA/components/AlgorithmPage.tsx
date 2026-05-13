@@ -208,20 +208,20 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
         <ComplexityGraph highlightAlgorithm={algorithmId} />
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+      <footer className="mt-12 flex flex-col gap-3 border-t border-[var(--color-border)] pt-8 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-sm hover:bg-[var(--color-surface)] transition-colors text-center"
+          className="rounded-full border border-[var(--color-border)] bg-white px-6 py-3 text-sm font-semibold hover:bg-[var(--color-surface)] transition-colors text-center"
         >
           Back to Home
         </Link>
         <Link
           href="/compare"
-          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:shadow-lg transition-shadow text-center"
+          className="rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:shadow-lg transition-shadow text-center"
         >
           Compare All Algorithms
         </Link>
-      </div>
+      </footer>
     </div>
   );
 }

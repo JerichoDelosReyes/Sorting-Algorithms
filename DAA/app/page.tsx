@@ -223,25 +223,14 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-auto w-full rounded-t-[28px] border-t border-[var(--color-border)] bg-[#1D1D1F] px-4 py-8 text-white sm:px-6 md:px-12 md:py-10">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 text-center md:grid-cols-3 md:items-center md:text-left">
-          <div className="flex justify-center md:justify-start">
-            <Link href="/" className="text-xl font-semibold">
+      <footer className="mt-auto w-full border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-6 sm:px-6 md:px-12 md:py-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
+          <div>
+            <Link href="/" className="font-semibold text-[var(--color-text-primary)]">
               Sort
             </Link>
           </div>
-          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center md:gap-6">
-            <Link href="/" className="text-sm text-white/70 transition-colors hover:text-white">
-              Home
-            </Link>
-            <Link href="/bubble-sort" className="text-sm text-white/70 transition-colors hover:text-white">
-              Algorithms
-            </Link>
-            <Link href="/compare" className="text-sm text-white/70 transition-colors hover:text-white">
-              Compare
-            </Link>
-          </div>
-          <div className="text-center text-xs text-white/60 md:text-right">
+          <div className="text-center text-xs text-[var(--color-text-secondary)]">
             COSC 90 Final Project | Cavite State University Imus Campus
           </div>
         </div>

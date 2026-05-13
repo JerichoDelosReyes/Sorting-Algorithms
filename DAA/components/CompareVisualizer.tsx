@@ -20,11 +20,11 @@ interface CompareVisualizerProps {
 
 export default function CompareVisualizer({ items }: CompareVisualizerProps) {
   return (
-    <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
+    <div className="grid gap-4 sm:gap-6 lg:grid-cols-3 lg:items-start">
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex min-h-[24rem] flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur sm:min-h-[26rem] lg:min-h-[28rem]"
+          className="flex w-full min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-card backdrop-blur sm:p-6 lg:h-[34rem]"
         >
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">{item.name}</h3>
@@ -33,7 +33,7 @@ export default function CompareVisualizer({ items }: CompareVisualizerProps) {
             </span>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 min-h-0 flex-1">
             <Visualizer
               frames={item.frames}
               currentFrameIndex={item.frameIndex}
