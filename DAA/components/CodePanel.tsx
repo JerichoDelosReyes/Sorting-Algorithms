@@ -134,7 +134,7 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
   };
 
   return (
-    <div className="flex h-48 min-h-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card sm:h-64 lg:h-full">
+    <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[#1C1C1E] shadow-card">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 flex-shrink-0">
         <div className="text-sm font-medium text-white/80">TypeScript</div>
         <button
@@ -164,8 +164,8 @@ export default function CodePanel({ code, activeLine }: CodePanelProps) {
           )}
         </button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]">
-        <pre className="text-xs leading-6 text-white/90 font-mono">
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-[#3A3A3C] scrollbar-track-[#2C2C2E]">
+        <pre className="m-0 text-xs leading-6 text-white/90 font-mono">
           {linesArray.map((line, index) => {
             const lineNumber = index + 1;
             const tokens = tokenizeLine(line);

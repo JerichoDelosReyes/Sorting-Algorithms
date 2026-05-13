@@ -9,7 +9,7 @@ export default function AlgoDescription({ algorithmId }: AlgoDescriptionProps) {
   const info = ALGO_INFO[algorithmId];
 
   return (
-    <div className="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
+    <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
       <h3 className="text-lg font-semibold">About {info.name}</h3>
       <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
         {info.description}

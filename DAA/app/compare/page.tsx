@@ -149,11 +149,11 @@ export default function ComparePage() {
         </p>
       </header>
 
-      <div className="mt-4 flex flex-col gap-3 sm:mt-6 sm:flex-wrap sm:flex-row sm:items-center">
+      <div className="mt-4 grid gap-3 sm:mt-6 sm:flex sm:flex-wrap sm:items-center">
         <button
           type="button"
           onClick={handleShuffle}
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm hover:bg-[var(--color-surface)] transition-colors disabled:opacity-50"
+          className="w-full rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50 sm:w-auto sm:text-sm"
           disabled={isPlaying}
         >
           Shuffle
@@ -161,7 +161,7 @@ export default function ComparePage() {
         <button
           type="button"
           onClick={handlePlayToggle}
-          className="rounded-full bg-[var(--color-accent)] px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow"
+          className="w-full rounded-full bg-[var(--color-accent)] px-5 py-2 text-xs font-semibold text-white shadow-sm transition-shadow hover:shadow-md sm:w-auto sm:text-sm"
         >
           {isPlaying ? "Pause" : "Play"}
         </button>
@@ -196,7 +196,7 @@ export default function ComparePage() {
         <button
           type="button"
           onClick={handleReset}
-          className="rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs sm:text-sm hover:bg-[var(--color-surface)] transition-colors"
+          className="w-full rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-xs transition-colors hover:bg-[var(--color-surface)] sm:w-auto sm:text-sm"
         >
           Reset
         </button>

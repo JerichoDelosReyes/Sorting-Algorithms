@@ -87,11 +87,6 @@ export default function HomePage() {
             animate="show"
             variants={heroVariants}
           >
-            <div className="mb-6 inline-flex">
-              <span className="rounded-full border border-[var(--color-border)] bg-white px-4 py-1.5 text-xs font-medium text-[var(--color-text-secondary)]">
-                Design and Analysis of Algorithms
-              </span>
-            </div>
             <h1 className="text-5xl font-bold leading-tight md:text-6xl">
               Sorting Algorithm Visualizer
             </h1>
@@ -122,13 +117,7 @@ export default function HomePage() {
               <div>
                 <h2 className="text-3xl font-bold md:text-4xl">What is a Sorting Algorithm?</h2>
                 <p className="mt-6 text-[var(--color-text-secondary)]">
-                  A sorting algorithm is a set of instructions designed to arrange elements in a specific order, most commonly in ascending or descending sequence. Sorting is one of the most fundamental operations in computer science and is used everywhere—from databases that organize millions of records to search engines that rank results by relevance.
-                </p>
-                <p className="mt-4 text-[var(--color-text-secondary)]">
-                  Different sorting algorithms have different performance characteristics. Some are simple but slow on large datasets, while others are more complex but execute lightning-fast. Understanding how these algorithms work and how they compare is essential knowledge for any programmer designing efficient systems.
-                </p>
-                <p className="mt-4 text-[var(--color-text-secondary)]">
-                  In this visualizer, you will explore three classic sorting algorithms: Bubble Sort, Merge Sort, and Quick Sort. Each demonstrates different trade-offs between simplicity, speed, and memory usage, giving you insight into how computer scientists choose the right tool for the job.
+                  A sorting algorithm is a set of instructions for arranging data in a chosen order, usually ascending or descending. It is a core technique in computer science that helps software organize and process information efficiently.
                 </p>
               </div>
               <div className="flex h-64 items-end justify-center gap-1 rounded-[16px] bg-[var(--color-surface)] p-6">
@@ -234,14 +223,14 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-auto w-full rounded-t-[28px] border-t border-[var(--color-border)] bg-[#1D1D1F] px-6 py-10 text-white md:px-12">
-        <div className="mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-3 md:items-center">
-          <div>
+      <footer className="mt-auto w-full rounded-t-[28px] border-t border-[var(--color-border)] bg-[#1D1D1F] px-4 py-8 text-white sm:px-6 md:px-12 md:py-10">
+        <div className="mx-auto grid w-full max-w-6xl gap-6 text-center md:grid-cols-3 md:items-center md:text-left">
+          <div className="flex justify-center md:justify-start">
             <Link href="/" className="text-xl font-semibold">
               Sort
             </Link>
           </div>
-          <div className="flex flex-col gap-2 text-center md:flex-row md:justify-center md:gap-6">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center md:gap-6">
             <Link href="/" className="text-sm text-white/70 transition-colors hover:text-white">
               Home
             </Link>
@@ -252,7 +241,7 @@ export default function HomePage() {
               Compare
             </Link>
           </div>
-          <div className="text-right text-xs text-white/60">
+          <div className="text-center text-xs text-white/60 md:text-right">
             COSC 90 Final Project | Cavite State University Imus Campus
           </div>
         </div>

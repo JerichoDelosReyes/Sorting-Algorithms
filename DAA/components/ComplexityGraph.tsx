@@ -64,14 +64,13 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
   const isQuickHighlighted = highlightAlgorithm === "quick";
 
   return (
-    <div className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-6 shadow-card backdrop-blur">
-      <h3 className="text-lg font-semibold mb-4">Time Complexity Comparison</h3>
-      <div className="overflow-x-auto">
+    <div className="flex min-h-[24rem] flex-col rounded-[20px] border border-[var(--color-border)] bg-white/80 p-6 shadow-card backdrop-blur sm:min-h-[26rem] lg:min-h-[28rem]">
+      <h3 className="mb-4 text-lg font-semibold">Time Complexity Comparison</h3>
+      <div className="min-h-0 flex-1 overflow-hidden rounded-[12px] bg-white/30">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          width="100%"
-          style={{ minWidth: "600px", height: "auto" }}
-          className="bg-white/30 rounded-[12px]"
+          preserveAspectRatio="none"
+          className="block h-full w-full"
         >
           {/* Grid lines */}
           {Array.from({ length: 6 }).map((_, i) => {

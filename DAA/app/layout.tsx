@@ -8,7 +8,10 @@ import { SoundProvider } from "../components/SoundProvider";
 export const metadata: Metadata = {
   title: "Sort",
   description:
-    "An interactive comparative study of Bubble Sort, Merge Sort, and Quick Sort."
+    "An interactive comparative study of Bubble Sort, Merge Sort, and Quick Sort.",
+  icons: {
+    icon: "/favicon.svg"
+  }
 };
 
 export default function RootLayout({

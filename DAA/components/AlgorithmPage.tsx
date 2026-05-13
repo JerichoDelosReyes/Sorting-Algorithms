@@ -40,46 +40,6 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
   const previousCounts = useRef({ comparisons: 0, swaps: 0 });
-  const leftPanelRef = useRef<HTMLDivElement | null>(null);
-  const [codePanelHeight, setCodePanelHeight] = useState<number | null>(null);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-    const handleChange = () => setIsLargeScreen(mediaQuery.matches);
-
-    handleChange();
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    if (!isLargeScreen || !leftPanelRef.current) {
-      setCodePanelHeight(null);
-      return;
-    }
-
-    const element = leftPanelRef.current;
-    const updateHeight = () => {
-      const nextHeight = Math.round(element.getBoundingClientRect().height);
-      setCodePanelHeight((prev) => (prev === nextHeight ? prev : nextHeight));
-    };
-
-    updateHeight();
-
-    if (typeof ResizeObserver === "undefined") {
-      return;
-    }
-
-    const observer = new ResizeObserver(updateHeight);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [isLargeScreen]);
 
   useEffect(() => {
     const nextFrames = RECORDERS[algorithmId](array);
@@ -209,11 +169,8 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
         </div>
       </header>
 
-      <div className="mt-8 grid items-start gap-4 md:gap-6 lg:grid-cols-2">
-        <div
-          ref={leftPanelRef}
-          className="flex flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-card backdrop-blur sm:p-6"
-        >
+      <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-2 lg:items-start">
+        <div className="flex min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-card backdrop-blur sm:p-6 lg:h-[34rem]">
           <Visualizer
             frames={frames}
             currentFrameIndex={currentFrame}
@@ -237,15 +194,12 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
           />
         </div>
 
-        <div
-          className="flex min-h-0 w-full"
-          style={codePanelHeight ? { height: codePanelHeight } : undefined}
-        >
+        <div className="flex h-[24rem] min-w-0 w-full sm:h-[26rem] lg:h-[34rem]">
           <CodePanel code={info.code} activeLine={activeFrame?.activeLine} />
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-stretch">
         <ComplexityCard algorithmId={algorithmId} />
         <AlgoDescription algorithmId={algorithmId} />
       </div>

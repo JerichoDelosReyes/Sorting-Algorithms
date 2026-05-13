@@ -21,7 +21,7 @@ export default function ComplexityCard({ algorithmId }: ComplexityCardProps) {
   const { complexity, stable } = info;
 
   return (
-    <div className="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
+    <div className="flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
       <h3 className="text-lg font-semibold">Complexity</h3>
       <div className="mt-4 grid gap-3 text-sm">
         <div className="flex items-center justify-between">
