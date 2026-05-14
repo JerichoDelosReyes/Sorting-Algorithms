@@ -139,3 +139,74 @@ button:disabled {
   scrollbar-width: thin;
   scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
 }
+
+@keyframes wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero-animated {
+  background: linear-gradient(
+    45deg,
+    #f0fdf4 0%,
+    #dbeafe 25%,
+    #f0fdf4 50%,
+    #dbeafe 75%,
+    #f0fdf4 100%
+  );
+  background-size: 200% 200%;
+  animation: wave 8s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .hero-animated {
+  background: linear-gradient(
+    45deg,
+    rgba(10, 132, 255, 0.18) 0%,
+    rgba(125, 92, 255, 0.12) 25%,
+    rgba(10, 132, 255, 0.1) 50%,
+    rgba(125, 92, 255, 0.18) 75%,
+    rgba(10, 132, 255, 0.18) 100%
+  );
+  background-size: 200% 200%;
+}
+
+html[data-theme="light"] .hero-animated {
+  background: linear-gradient(
+    45deg,
+    #f0fdf4 0%,
+    #dbeafe 25%,
+    #f0fdf4 50%,
+    #dbeafe 75%,
+    #f0fdf4 100%
+  );
+  background-size: 200% 200%;
+}
+
+@keyframes waveAnimation {
+  0% {
+    height: 30%;
+  }
+  25% {
+    height: 50%;
+  }
+  50% {
+    height: 75%;
+  }
+  75% {
+    height: 50%;
+  }
+  100% {
+    height: 30%;
+  }
+}
+
+.bar-animate {
+  animation: waveAnimation 2s ease-in-out infinite;
+}
