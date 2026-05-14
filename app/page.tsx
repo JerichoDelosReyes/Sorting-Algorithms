@@ -23,18 +23,55 @@ const itemVariants = {
 };
 
 const heroVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.8,
       ease: "easeOut"
     }
   }
 };
 
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      delay: 0.2
+    }
+  }
+};
+
+const scrollIndicatorVariants = {
+  hidden: { opacity: 0, y: -10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: 0.8
+    }
+  },
+  bounce: {
+    y: [0, 8, 0],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
+
 export default function HomePage() {
+  const scrollToDefinition = () => {
+    const element = document.getElementById("definition");
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const scrollToAlgorithms = () => {
     const element = document.getElementById("algorithms");
     element?.scrollIntoView({ behavior: "smooth" });
@@ -42,39 +79,85 @@ export default function HomePage() {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="mx-auto w-full max-w-6xl px-6 pb-20">
-        {/* Hero Section */}
-        <section className="hero-animated rounded-[28px] border border-[var(--color-border)] px-6 py-20 text-center shadow-card md:py-24">
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={heroVariants}
+      {/* Full Screen Hero Section */}
+      <section className="relative -mt-24 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[var(--color-surface)] via-[var(--color-surface)] to-transparent pb-40">
+        <div className="absolute inset-0 -z-10 opacity-20">
+          <div className="absolute top-20 left-10 h-96 w-96 rounded-full bg-[#0A84FF] blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-purple-500 blur-3xl"></div>
+        </div>
+        
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={heroVariants}
+          className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-0"
+        >
+          <motion.h1
+            variants={textVariants}
+            className="text-6xl font-bold leading-tight md:text-7xl lg:text-8xl"
           >
-            <h1 className="text-5xl font-bold leading-tight md:text-6xl">
-              Sorting Algorithm Visualizer
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-base text-[var(--color-text-secondary)] md:text-lg">
-              Explore, visualize, and compare three fundamental sorting algorithms through interactive animations and real-time performance metrics.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={scrollToAlgorithms}
-                className="rounded-full bg-[var(--color-accent)] px-8 py-3 text-sm font-semibold text-white transition-shadow hover:shadow-lg"
-              >
-                Start Exploring
-              </button>
-              <Link
-                href="/compare"
-                className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)]"
-              >
-                Compare All
-              </Link>
-            </div>
-          </motion.div>
-        </section>
+            Are you ready to
+            <span className="block bg-gradient-to-r from-[#0A84FF] to-purple-500 bg-clip-text text-transparent">
+              sort?
+            </span>
+          </motion.h1>
+          
+          <motion.p
+            variants={textVariants}
+            className="mx-auto mt-8 max-w-2xl text-lg text-[var(--color-text-secondary)] md:text-xl"
+          >
+            Discover how different sorting algorithms organize data and compare their performance in real-time.
+          </motion.p>
 
+          <motion.div
+            variants={textVariants}
+            className="mt-12 flex flex-wrap items-center justify-center gap-4"
+          >
+            <button
+              onClick={scrollToDefinition}
+              className="rounded-full bg-[#0A84FF] px-8 py-3 text-sm font-semibold text-white transition-shadow hover:shadow-lg"
+            >
+              Learn More
+            </button>
+            <Link
+              href="/compare"
+              className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-8 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-hover)]"
+            >
+              Compare All
+            </Link>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial="hidden"
+          animate={["show", "bounce"]}
+          variants={scrollIndicatorVariants}
+          className="absolute bottom-20 left-0 right-0 flex cursor-pointer justify-center"
+          onClick={scrollToDefinition}
+        >
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-sm font-medium text-[var(--color-text-secondary)]">Scroll to explore</span>
+            <svg
+              className="h-6 w-6 text-[#0A84FF]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
+            </svg>
+          </div>
+        </motion.div>
+      </section>
+
+      <div className="mx-auto w-full max-w-6xl px-6 pb-20 pt-0">
         {/* What is a Sorting Algorithm Section */}
-        <section className="mt-16 md:mt-24">
+        <section id="definition" className="scroll-mt-20">
           <div className="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-12 shadow-card md:px-12 md:py-16">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
