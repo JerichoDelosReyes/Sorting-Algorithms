@@ -212,7 +212,7 @@ export default function AlgorithmPage({ algorithmId }: AlgorithmPageProps) {
       </header>
 
       <div className="mt-8 grid gap-4 md:gap-6 lg:grid-cols-[5fr_3fr] xl:grid-cols-[2fr_1fr] lg:items-stretch">
-        <div className="flex min-w-0 flex-col overflow-hidden rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card backdrop-blur lg:h-[36rem]">
+        <div className="flex min-w-0 flex-col overflow-hidden rounded-[20px] border border-[var(--color-code-border)] bg-[var(--color-code-bg)] shadow-card backdrop-blur lg:h-[36rem]">
           <div className="flex flex-shrink-0 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-3">
             <div className="flex gap-2">
               <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>

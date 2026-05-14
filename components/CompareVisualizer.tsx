@@ -24,7 +24,7 @@ export default function CompareVisualizer({ items }: CompareVisualizerProps) {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex w-full min-w-0 flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-card backdrop-blur sm:p-6"
+          className="flex w-full min-w-0 flex-col rounded-[20px] border border-[var(--color-code-border)] bg-[var(--color-code-bg)] p-5 shadow-card backdrop-blur sm:p-6"
         >
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">{item.name}</h3>
