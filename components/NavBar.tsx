@@ -140,7 +140,7 @@ export default function NavBar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+              className={`text-center rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 isActive(item.href)
                   ? "bg-[var(--color-accent)] text-white shadow-sm"
                   : "text-[var(--color-text-primary)] hover:bg-[var(--color-hover)]"
@@ -192,7 +192,7 @@ export default function NavBar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`text-center rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   isActive(item.href)
                     ? "bg-[var(--color-accent)] text-white shadow-sm"
                     : "text-[var(--color-text-primary)] hover:bg-[var(--color-hover)]"
