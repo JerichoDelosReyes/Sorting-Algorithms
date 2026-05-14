@@ -39,7 +39,7 @@ const COLOR_MAP: Record<TokenType, string> = {
   comment: "#8E8E93",
   string: "#FF9F0A",
   number: "#BF5AF2",
-  plain: "#E5E5EA",
+  plain: "var(--color-text-primary)",
   function: "#D97706"
 };
 
