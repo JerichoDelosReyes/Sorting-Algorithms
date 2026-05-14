@@ -78,7 +78,12 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
 
   // Scale functions
   const scaleX = (n: number) => (n / maxN) * chart.plotWidth + chart.left;
-  const scaleY = (value: number) => chart.height - chart.bottom - (value / maxValue) * chart.plotHeight;
+  const scaleY = (value: number) => {
+    // Add 1 to avoid undefined log(0) at values of zero
+    const logValue = Math.log10(value + 1);
+    const maxLogValue = Math.log10(maxValue + 1);
+    return chart.height - chart.bottom - (logValue / maxLogValue) * chart.plotHeight;
+  };
 
   const formatNumber = (value: number): string => {
     if (value >= 1000) {
@@ -233,7 +238,10 @@ export default function ComplexityGraph({ highlightAlgorithm }: ComplexityGraphP
 
           {/* Tick marks and labels on y-axis */}
           {Array.from({ length: yTickCount }).map((_, i) => {
-            const value = (maxValue / (yTickCount - 1)) * i;
+            const maxLogValue = Math.log10(maxValue + 1);
+            const logValue = (maxLogValue / (yTickCount - 1)) * i;
+            const value = Math.max(0, Math.pow(10, logValue) - 1);
+
             const y = scaleY(value);
             return (
               <g key={`tick-y-${i}`}>

@@ -6,6 +6,7 @@ interface AlgoCardProps {
 }
 
 export default function AlgoCard({ info }: AlgoCardProps) {
+  // Card displaying algorithm summary
   return (
     <div className="group flex h-full flex-col rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-card backdrop-blur">
       <h3 className="text-xl font-semibold">{info.name}</h3>

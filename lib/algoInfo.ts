@@ -270,8 +270,8 @@ export const ALGO_INFO: Record<Algorithm, AlgorithmInfo> = {
     slug: "/bubble-sort",
     complexity: {
       best: "Ω(n)",
-      average: "Θ(n^2)",
-      worst: "O(n^2)",
+      average: "Θ(n²)",
+      worst: "O(n²)",
       space: "O(1)"
     },
     description:
@@ -307,7 +307,7 @@ export const ALGO_INFO: Record<Algorithm, AlgorithmInfo> = {
     complexity: {
       best: "Ω(n log n)",
       average: "Θ(n log n)",
-      worst: "O(n^2)",
+      worst: "O(n²)",
       space: "O(log n)"
     },
     description:

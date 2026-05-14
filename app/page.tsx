@@ -67,6 +67,7 @@ const scrollIndicatorVariants = {
 };
 
 export default function HomePage() {
+  // Scroll handlers
   const scrollToDefinition = () => {
     const element = document.getElementById("definition");
     element?.scrollIntoView({ behavior: "smooth" });
